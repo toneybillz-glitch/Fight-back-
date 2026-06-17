@@ -975,14 +975,17 @@
     };
 
     const checkAccess=()=>{
-      if(isPro)return true;
-      if(freeUsed<1)return true;
-      setShowPaywall(true);
-      return false;
+      // Always allow the analysis to run — paywall shows on result screen
+      return true;
     };
 
     const onAnalysisDone=()=>{
-      if(!isPro){const n=bumpFree();setFreeUsed(n);}
+      if(!isPro){
+        const n=bumpFree();
+        setFreeUsed(n);
+        // Show paywall after 2nd completed analysis, not before
+        if(n>=2) setTimeout(()=>setShowPaywall(true), 3000);
+      }
     };
 
     const saveCase=c=>{setCases(p=>[c,...p]);showToast("✓ Case saved to tracker");};
@@ -1032,14 +1035,14 @@
         </nav>
 
         {/* Banners */}
-        {!isPro&&freeUsed<1&&(
+        {!isPro&&freeUsed<2&&(
           <div style={{background:"rgba(124,58,237,.06)",borderBottom:"1px solid rgba(124,58,237,.1)",padding:"9px 24px",textAlign:"center",fontSize:12,color:"#a78bfa",fontWeight:600}}>
-            ⚡ You have <strong>1 free preview</strong> — upgrade to unlock the full analysis
+            ⚡ <strong>{2-freeUsed} free {2-freeUsed===1?"analysis":"analyses"}</strong> remaining — no account needed
           </div>
         )}
-        {!isPro&&freeUsed>=1&&(
+        {!isPro&&freeUsed>=2&&(
           <div onClick={()=>setShowPaywall(true)} style={{background:"rgba(124,58,237,.08)",borderBottom:"1px solid rgba(124,58,237,.15)",padding:"9px 24px",textAlign:"center",fontSize:12,color:"#a78bfa",fontWeight:700,cursor:"pointer"}}>
-            🔒 Upgrade to unlock full analysis + scripts + PDF downloads — $9.99/mo
+            🔒 Upgrade to unlock unlimited access + PDF downloads — $9.99/mo
           </div>
         )}
 
