@@ -187,7 +187,7 @@
   const ResultPanel=({result,title,icon,onNew,onSave,isPro,onUpgrade})=>{
     const [copied,setCopied]=useState(false);
     const lines=result.split("\n");
-    const cutoff=Math.floor(lines.length*.42);
+    const cutoff=Math.floor(lines.length*.75);
     const visibleText=lines.slice(0,cutoff).join("\n");
     const hiddenText=lines.slice(cutoff).join("\n");
     const copy=()=>{navigator.clipboard?.writeText(result);setCopied(true);setTimeout(()=>setCopied(false),2000)};
@@ -704,7 +704,7 @@
     const acceptDisclaimer=()=>{try{localStorage.setItem("jsfy_disc","1")}catch{}setDisclaimerAccepted(true);};
     const checkAccess=()=>true;
     const onAnalysisDone=()=>{
-      if(!isPro){const n=bumpFree();setFreeUsed(n);if(n>=2)setTimeout(()=>setShowPaywall(true),3000);}
+      if(!isPro){const n=bumpFree();setFreeUsed(n);if(n>=3)setTimeout(()=>setShowPaywall(true),3000);}
     };
     const saveCase=c=>{setCases(p=>[c,...p]);showToast("✓ Case saved to tracker");};
     const updateCase=(id,u)=>setCases(p=>p.map(c=>c.id===id?{...c,...u}:c));
@@ -741,8 +741,8 @@
             {isPro&&<div style={{background:"rgba(52,211,153,.08)",border:"1px solid rgba(52,211,153,.2)",borderRadius:8,color:"#34d399",fontSize:11,fontWeight:700,padding:"7px 10px"}}>✓ PRO</div>}
           </div>
         </nav>
-        {!isPro&&freeUsed<2&&<div style={{background:"rgba(124,58,237,.06)",borderBottom:"1px solid rgba(124,58,237,.1)",padding:"9px 24px",textAlign:"center",fontSize:12,color:"#a78bfa",fontWeight:600}}>⚡ <strong>{2-freeUsed} free {2-freeUsed===1?"analysis":"analyses"}</strong> remaining — no account needed</div>}
-        {!isPro&&freeUsed>=2&&<div onClick={()=>setShowPaywall(true)} style={{background:"rgba(124,58,237,.08)",borderBottom:"1px solid rgba(124,58,237,.15)",padding:"9px 24px",textAlign:"center",fontSize:12,color:"#a78bfa",fontWeight:700,cursor:"pointer"}}>🔒 Upgrade to unlock unlimited access + PDF downloads — $9.99/mo</div>}
+        {!isPro&&freeUsed<3&&<div style={{background:"rgba(124,58,237,.06)",borderBottom:"1px solid rgba(124,58,237,.1)",padding:"9px 24px",textAlign:"center",fontSize:12,color:"#a78bfa",fontWeight:600}}>⚡ <strong>{3-freeUsed} free {3-freeUsed===1?"analysis":"analyses"}</strong> remaining — no account needed</div>}
+        {!isPro&&freeUsed>=3&&<div onClick={()=>setShowPaywall(true)} style={{background:"rgba(124,58,237,.08)",borderBottom:"1px solid rgba(124,58,237,.15)",padding:"9px 24px",textAlign:"center",fontSize:12,color:"#a78bfa",fontWeight:700,cursor:"pointer"}}>🔒 Upgrade to unlock unlimited access + PDF downloads — $9.99/mo</div>}
         <div style={{maxWidth:640,margin:"0 auto",padding:"32px 20px 80px",position:"relative",zIndex:1}}>
           {screen==="home"&&<Home onSelect={selectTool}/>}
           {screen==="tool"&&tool==="fight"&&<FightTool {...toolProps}/>}
