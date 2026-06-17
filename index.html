@@ -186,10 +186,6 @@
 
   const ResultPanel=({result,title,icon,onNew,onSave,isPro,onUpgrade})=>{
     const [copied,setCopied]=useState(false);
-    const lines=result.split("\n");
-    const cutoff=Math.floor(lines.length*.75);
-    const visibleText=lines.slice(0,cutoff).join("\n");
-    const hiddenText=lines.slice(cutoff).join("\n");
     const copy=()=>{navigator.clipboard?.writeText(result);setCopied(true);setTimeout(()=>setCopied(false),2000)};
     return(
       <div className="fade-up">
@@ -198,28 +194,12 @@
           <div style={{fontSize:13,fontWeight:700,color:"#a78bfa"}}>{icon} {title} — Analysis ready</div>
         </div>
         <div className="glass" style={{padding:28,marginBottom:14,position:"relative"}}>
-          <pre style={{whiteSpace:"pre-wrap",fontFamily:"inherit",fontSize:14,color:"#d0d0d0",lineHeight:1.9}}>{isPro?result:visibleText}</pre>
-          {!isPro&&hiddenText&&(
-            <div style={{position:"relative",marginTop:0}}>
-              <pre style={{whiteSpace:"pre-wrap",fontFamily:"inherit",fontSize:14,color:"#d0d0d0",lineHeight:1.9,filter:"blur(5px)",userSelect:"none",pointerEvents:"none"}}>{hiddenText}</pre>
-              <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"linear-gradient(to bottom,rgba(4,5,10,0) 0%,rgba(4,5,10,.85) 30%)"}}>
-                <div style={{background:"rgba(4,5,10,.9)",border:"1px solid rgba(124,58,237,.3)",borderRadius:16,padding:24,textAlign:"center",maxWidth:340,backdropFilter:"blur(8px)"}}>
-                  <div style={{fontSize:24,marginBottom:8}}>🔒</div>
-                  <div style={{fontSize:15,fontWeight:900,marginBottom:6}}>Unlock Your Full Defense</div>
-                  <div style={{fontSize:12,color:"#555",lineHeight:1.6,marginBottom:16}}>The scripts, action steps, and exact legal language are blurred. Upgrade to see everything.</div>
-                  <button onClick={()=>window.open(STRIPE_LINK,"_blank")} className="action-btn" style={{width:"100%",padding:"13px 0",fontSize:14}}>Unlock for $9.99/mo →</button>
-                  <div style={{fontSize:10,color:"#2a2a2a",marginTop:8}}>Cancel anytime</div>
-                </div>
-              </div>
-            </div>
-          )}
-          {isPro&&(
-            <div style={{display:"flex",gap:10,marginTop:24,paddingTop:20,borderTop:"1px solid rgba(255,255,255,.05)"}}>
-              <button onClick={copy} className="action-btn" style={{flex:1,padding:"13px 0",fontSize:13}}>{copied?"✓ Copied!":"📋 Copy"}</button>
-              <button onClick={()=>generatePDF(title||"Legal Analysis",result)} className="ghost-btn" style={{flex:1,padding:"13px 0",fontSize:13}}>📄 Download PDF</button>
-              {onSave&&<button onClick={onSave} className="ghost-btn" style={{flex:1,padding:"13px 0",fontSize:13}}>📁 Save</button>}
-            </div>
-          )}
+          <pre style={{whiteSpace:"pre-wrap",fontFamily:"inherit",fontSize:14,color:"#d0d0d0",lineHeight:1.9}}>{result}</pre>
+          <div style={{display:"flex",gap:10,marginTop:24,paddingTop:20,borderTop:"1px solid rgba(255,255,255,.05)"}}>
+            <button onClick={copy} className="action-btn" style={{flex:1,padding:"13px 0",fontSize:13}}>{copied?"✓ Copied!":"📋 Copy"}</button>
+            {isPro&&<button onClick={()=>generatePDF(title||"Legal Analysis",result)} className="ghost-btn" style={{flex:1,padding:"13px 0",fontSize:13}}>📄 Download PDF</button>}
+            {isPro&&onSave&&<button onClick={onSave} className="ghost-btn" style={{flex:1,padding:"13px 0",fontSize:13}}>📁 Save</button>}
+          </div>
           <button onClick={onNew} style={{marginTop:10,width:"100%",background:"none",border:"1px solid rgba(255,255,255,.05)",borderRadius:10,color:"#333",padding:"11px 0",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>← New Analysis</button>
         </div>
         <div style={{background:"linear-gradient(135deg,rgba(124,58,237,.1),rgba(37,99,235,.06))",border:"1px solid rgba(124,58,237,.25)",borderRadius:20,padding:26}}>
