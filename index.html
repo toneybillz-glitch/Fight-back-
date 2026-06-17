@@ -7,739 +7,607 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fraunces:wght@700;900&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{background:#04050a;font-family:'Inter',system-ui,sans-serif;color:#f0f0f0;min-height:100vh;overflow-x:hidden}
+    body{background:#0f0f13;font-family:'Inter',system-ui,sans-serif;color:#f0f0f0;min-height:100vh;overflow-x:hidden}
     ::-webkit-scrollbar{width:3px}
-    ::-webkit-scrollbar-track{background:#04050a}
-    ::-webkit-scrollbar-thumb{border-radius:3px;background:linear-gradient(#7c3aed,#2563eb)}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    ::-webkit-scrollbar-track{background:#0f0f13}
+    ::-webkit-scrollbar-thumb{border-radius:3px;background:#4c1d95}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
     @keyframes spin{to{transform:rotate(360deg)}}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
     @keyframes gradMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-    @keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(124,58,237,.3)}50%{box-shadow:0 0 40px rgba(124,58,237,.6),0 0 80px rgba(37,99,235,.2)}}
-    @keyframes slideLeft{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
-    @keyframes countUp{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
     .fade-up{animation:fadeUp .5s cubic-bezier(.22,.68,0,1.2) both}
     .fade-in{animation:fadeIn .3s ease both}
-    .slide-left{animation:slideLeft .4s cubic-bezier(.22,.68,0,1.2) both}
-    .tool-btn{padding:0;border:none;cursor:pointer;font-family:inherit;border-radius:20px;transition:all .3s cubic-bezier(.22,.68,0,1.2);position:relative;overflow:hidden}
-    .tool-btn:hover{transform:translateY(-6px) scale(1.02)}
-    .tool-btn:active{transform:translateY(-2px) scale(.99)}
-    .action-btn{border:none;cursor:pointer;font-family:inherit;font-weight:800;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;border-radius:14px;transition:all .2s;position:relative;overflow:hidden;letter-spacing:.3px}
-    .action-btn::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:left .5s}
-    .action-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(124,58,237,.4)}
-    .action-btn:hover::after{left:150%}
-    .action-btn:active{transform:translateY(0)}
-    .action-btn:disabled{background:#1a1a2e;color:#333;cursor:not-allowed;transform:none;box-shadow:none}
-    .action-btn:disabled::after{display:none}
-    .ghost-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:#555;font-family:inherit;font-weight:600;cursor:pointer;transition:all .2s}
-    .ghost-btn:hover{border-color:rgba(124,58,237,.4);color:#a78bfa;background:rgba(124,58,237,.06)}
-    .glass{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:20px}
-    .glass-purple{background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.2);border-radius:16px}
-    .field{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;color:#f0f0f0;padding:15px 18px;font-size:14px;font-family:inherit;outline:none;transition:all .2s;appearance:none;line-height:1.5}
-    .field:focus{border-color:rgba(124,58,237,.6);background:rgba(124,58,237,.06);box-shadow:0 0 0 4px rgba(124,58,237,.1)}
-    .field option{background:#0a0b14}
+    .action-btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;background:linear-gradient(135deg,#6d28d9,#1d4ed8);color:#fff;border-radius:12px;transition:all .2s;letter-spacing:.2px}
+    .action-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(109,40,217,.35)}
+    .action-btn:disabled{background:#1e1e2e;color:#333;cursor:not-allowed;transform:none;box-shadow:none}
+    .ghost-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:#666;font-family:inherit;font-weight:600;cursor:pointer;transition:all .2s}
+    .ghost-btn:hover{border-color:rgba(109,40,217,.4);color:#a78bfa;background:rgba(109,40,217,.08)}
+    .card{background:#18181f;border:1px solid rgba(255,255,255,.07);border-radius:16px}
+    .card-purple{background:rgba(109,40,217,.08);border:1px solid rgba(109,40,217,.2);border-radius:14px}
+    .field{width:100%;background:#1e1e2a;border:1.5px solid rgba(255,255,255,.08);border-radius:12px;color:#f0f0f0;padding:14px 18px;font-size:14px;font-family:inherit;outline:none;transition:all .2s;appearance:none;line-height:1.5}
+    .field:focus{border-color:rgba(109,40,217,.6);background:rgba(109,40,217,.06);box-shadow:0 0 0 3px rgba(109,40,217,.1)}
+    .field option{background:#1e1e2a}
     textarea.field{resize:vertical;min-height:120px}
-    .topic-card{padding:16px;border-radius:14px;cursor:pointer;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);transition:all .2s;text-align:left;font-family:inherit;width:100%;display:flex;align-items:flex-start;gap:12px}
-    .topic-card:hover{border-color:rgba(124,58,237,.35);background:rgba(124,58,237,.06);transform:translateX(4px)}
-    .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.6px}
-    .badge-red{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171}
-    .badge-yellow{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.22);color:#fbbf24}
-    .badge-green{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.18);color:#34d399}
-    .badge-purple{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);color:#a78bfa}
-    .nav-pill{padding:7px 16px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid transparent;transition:all .2s;font-family:inherit;white-space:nowrap;letter-spacing:.3px}
-    .nav-pill.active{background:rgba(124,58,237,.15);border-color:rgba(124,58,237,.4);color:#a78bfa}
-    .nav-pill.inactive{background:transparent;border-color:transparent;color:#333}
-    .nav-pill.inactive:hover{color:#666}
-    .doc-drop{border:2px dashed rgba(124,58,237,.3);border-radius:16px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(124,58,237,.03)}
-    .doc-drop:hover{border-color:rgba(124,58,237,.6);background:rgba(124,58,237,.08)}
+    .topic-card{padding:16px;border-radius:14px;cursor:pointer;border:1.5px solid rgba(255,255,255,.06);background:#18181f;transition:all .2s;text-align:left;font-family:inherit;width:100%;display:flex;align-items:center;gap:14px}
+    .topic-card:hover{border-color:rgba(109,40,217,.4);background:rgba(109,40,217,.06);transform:translateX(3px)}
+    .nav-pill{padding:7px 16px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:all .2s;font-family:inherit;white-space:nowrap}
+    .nav-pill.active{background:rgba(109,40,217,.15);border-color:rgba(109,40,217,.4);color:#a78bfa}
+    .nav-pill.inactive{background:transparent;color:#444}
+    .nav-pill.inactive:hover{color:#888}
+    .tool-card{background:#18181f;border:1.5px solid rgba(255,255,255,.06);border-radius:16px;padding:20px;text-align:left;cursor:pointer;font-family:inherit;transition:all .25s;width:100%}
+    .tool-card:hover{transform:translateY(-3px);border-color:rgba(109,40,217,.35);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+    .star{color:#f59e0b;font-size:13px}
+    .avatar{width:40px;height:40px;border-radius:50%;border:2px solid rgba(255,255,255,.1);object-fit:cover;flex-shrink:0}
   </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-  const {useState,useEffect,useRef,useCallback}=React;
+const {useState,useEffect}=React;
+const STRIPE_LINK="https://buy.stripe.com/fZu5kC9ot2uO27R3cvc3m00";
+const SESSION_LINK="https://buy.stripe.com/fZu5kC9ot2uO27R3cvc3m00";
 
-  const US_STATES=["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
+const US_STATES=["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
 
-  const TOOLS=[
-    {id:"fight",icon:"⚔️",label:"Legal Defense",sub:"Tickets · Debt · Eviction · Court",color:"#ef4444",badge:"badge-red",badgeLabel:"⚡ MOST USED"},
-    {id:"support",icon:"⚖️",label:"Child Support",sub:"Payer · Receiver · Modification",color:"#3b82f6",badge:"badge-purple",badgeLabel:"👶 FAMILY"},
-    {id:"expunge",icon:"📜",label:"Record Expungement",sub:"Clear old charges · Get a fresh start",color:"#10b981",badge:"badge-green",badgeLabel:"🔓 NEW"},
-    {id:"wage",icon:"💸",label:"Wage Theft Fighter",sub:"Unpaid wages · Overtime · Tips",color:"#f59e0b",badge:"badge-yellow",badgeLabel:"💰 HOT"},
-    {id:"loan",icon:"📄",label:"Predatory Loan Decoder",sub:"Payday loans · Hidden fees · Traps",color:"#8b5cf6",badge:"badge-purple",badgeLabel:"🔍 SCAN"},
-    {id:"docs",icon:"🔍",label:"Document Scanner",sub:"Upload any letter · AI reads it all",color:"#a78bfa",badge:"badge-purple",badgeLabel:"📁 UPLOAD"},
-  ];
+const TOOLS=[
+  {id:"fight",icon:"⚔️",label:"Legal Defense",sub:"Tickets · Debt · Eviction · Court",color:"#ef4444",tag:"Most Used"},
+  {id:"support",icon:"⚖️",label:"Child Support",sub:"Payer · Receiver · Modification",color:"#3b82f6",tag:"Family"},
+  {id:"expunge",icon:"📜",label:"Record Expungement",sub:"Clear old charges · Fresh start",color:"#10b981",tag:"Clear Record"},
+  {id:"wage",icon:"💸",label:"Wage Theft Fighter",sub:"Unpaid wages · Overtime · Tips",color:"#f59e0b",tag:"Get Paid"},
+  {id:"loan",icon:"📄",label:"Predatory Loan Decoder",sub:"Payday · Title · Hidden fees",color:"#8b5cf6",tag:"Scan It"},
+  {id:"docs",icon:"🔍",label:"Document Scanner",sub:"Any letter · AI reads it all",color:"#a78bfa",tag:"Upload"},
+  {id:"contract",icon:"🤝",label:"Contract Builder",sub:"Friend deals · Loans · Agreements",color:"#06b6d4",tag:"New"},
+  {id:"mortgage",icon:"🏡",label:"Mortgage & Home Loan",sub:"Review terms · Foreclosure · Rights",color:"#84cc16",tag:"New"},
+  {id:"smallclaims",icon:"🏛️",label:"Small Claims Court",sub:"Sue someone · Prepare your case",color:"#f97316",tag:"New"},
+  {id:"insurance",icon:"🛡️",label:"Insurance Dispute",sub:"Denied claims · Bad faith · Appeals",color:"#ec4899",tag:"New"},
+  {id:"consumer",icon:"🛒",label:"Consumer Rights",sub:"Refunds · Warranties · Scams",color:"#14b8a6",tag:"New"},
+  {id:"idtheft",icon:"🔐",label:"Identity Theft Response",sub:"Steps to take · Freeze credit",color:"#f43f5e",tag:"Urgent"},
+];
 
-  const FIGHT_TOPICS=[
-    {id:"ticket",icon:"🚨",label:"Traffic Ticket",urgency:"med",sub:"Fight your ticket and know your rights"},
+const TESTIMONIALS=[
+  {
+    text:"Debt collectors were calling me 5 times a day. Justify gave me the exact script to make them stop. It worked in 24 hours.",
+    name:"Marcus T.",
+    location:"Atlanta, GA",
+    tool:"Debt Collector",
+    initials:"MT",
+    bg:"#1e3a5f",
+    color:"#60a5fa"
+  },
+  {
+    text:"My landlord tried to evict me with 3 days notice. Justify told me exactly what my rights were. I'm still in my apartment.",
+    name:"Destiny R.",
+    location:"Houston, TX",
+    tool:"Eviction Defense",
+    initials:"DR",
+    bg:"#3b1f5e",
+    color:"#c084fc"
+  },
+  {
+    text:"My employer owed me 6 weeks of overtime. I used Justify to file a wage claim. Got a check for $3,200.",
+    name:"Carlos M.",
+    location:"Phoenix, AZ",
+    tool:"Wage Theft",
+    initials:"CM",
+    bg:"#1f3d2e",
+    color:"#4ade80"
+  },
+  {
+    text:"I needed a simple loan agreement for money I lent a friend. Justify drafted it in 2 minutes. Professional and clear.",
+    name:"Keisha W.",
+    location:"Chicago, IL",
+    tool:"Contract Builder",
+    initials:"KW",
+    bg:"#3d2a1a",
+    color:"#fb923c"
+  },
+];
+
+const loadFree=()=>{try{return parseInt(localStorage.getItem("jsfy_free")||"0")}catch{return 0}};
+const bumpFree=()=>{try{const n=loadFree()+1;localStorage.setItem("jsfy_free",n);return n}catch{return 1}};
+const loadPro=()=>{try{return localStorage.getItem("jsfy_pro")==="1"}catch{return false}};
+
+const callAI=async(system,userContent)=>{
+  const res=await fetch("/api/analyze",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1500,system,messages:[{role:"user",content:userContent}]})
+  });
+  const data=await res.json();
+  if(data.error)throw new Error(typeof data.error==="string"?data.error:data.error.message||"API Error");
+  return data.content?.find(b=>b.type==="text")?.text||"No response returned.";
+};
+
+const Stars=({n=5})=><span>{Array(n).fill("★").join("")}</span>;
+
+const Spinner=({label="Analyzing your situation..."})=>(
+  <div style={{padding:52,textAlign:"center",background:"#18181f",borderRadius:20,border:"1px solid rgba(255,255,255,.07)"}}>
+    <div style={{position:"relative",width:56,height:56,margin:"0 auto 20px"}}>
+      <div style={{width:56,height:56,border:"3px solid #1e1e2a",borderTop:"3px solid #6d28d9",borderRadius:"50%",animation:"spin .7s linear infinite"}}/>
+      <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>⚡</div>
+    </div>
+    <div style={{fontSize:15,fontWeight:700,color:"#fff",marginBottom:6}}>{label}</div>
+    <div style={{fontSize:12,color:"#444",animation:"pulse 1.5s infinite"}}>Powered by AI · 10–20 seconds</div>
+  </div>
+);
+
+const ResultPanel=({result,title,icon,onNew,isPro,onUpgrade})=>{
+  const [copied,setCopied]=useState(false);
+  const copy=()=>{navigator.clipboard?.writeText(result);setCopied(true);setTimeout(()=>setCopied(false),2000)};
+  return(
+    <div className="fade-up">
+      <div style={{padding:"13px 18px",marginBottom:14,display:"flex",alignItems:"center",gap:10,background:"rgba(109,40,217,.08)",border:"1px solid rgba(109,40,217,.2)",borderRadius:14}}>
+        <div style={{width:8,height:8,borderRadius:"50%",background:"#6d28d9",animation:"pulse 1.2s infinite",flexShrink:0}}/>
+        <div style={{fontSize:13,fontWeight:700,color:"#a78bfa"}}>{icon} {title} — Analysis complete</div>
+      </div>
+      <div style={{background:"#18181f",border:"1px solid rgba(255,255,255,.07)",borderRadius:20,padding:26,marginBottom:14}}>
+        <pre style={{whiteSpace:"pre-wrap",fontFamily:"inherit",fontSize:14,color:"#d0d0d0",lineHeight:1.95}}>{result}</pre>
+        <div style={{display:"flex",gap:10,marginTop:22,paddingTop:18,borderTop:"1px solid rgba(255,255,255,.05)"}}>
+          <button onClick={copy} className="action-btn" style={{flex:1,padding:"13px 0",fontSize:13}}>{copied?"✓ Copied!":"📋 Copy"}</button>
+          {isPro&&<button onClick={()=>{
+            const blob=new Blob([`<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>${title} — Justify</title><style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;padding:0 40px;color:#1a1a1a;line-height:1.8}h1{font-size:20px;border-bottom:2px solid #6d28d9;padding-bottom:10px}pre{white-space:pre-wrap;font-size:14px;line-height:1.9}.footer{margin-top:40px;padding-top:14px;border-top:1px solid #ddd;font-size:11px;color:#999}</style></head><body><h1>Justify — ${title}</h1><p style="color:#666;font-size:13px">Generated ${new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})}</p><br/><pre>${result}</pre><div class="footer">⚠ Legal information only, not legal advice. Consult a licensed attorney for your specific situation. justify.ai</div></body></html>`],{type:"text/html"});
+            const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`Justify-${title.replace(/\s+/g,"-")}.html`;a.click();URL.revokeObjectURL(url);
+          }} className="ghost-btn" style={{flex:1,padding:"13px 0",fontSize:13}}>📄 Save PDF</button>}
+        </div>
+        <button onClick={onNew} style={{marginTop:10,width:"100%",background:"none",border:"1px solid rgba(255,255,255,.06)",borderRadius:10,color:"#444",padding:"11px 0",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>← New Analysis</button>
+      </div>
+
+      {!isPro&&(
+        <div style={{background:"linear-gradient(135deg,rgba(109,40,217,.12),rgba(29,78,216,.08))",border:"1px solid rgba(109,40,217,.3)",borderRadius:18,padding:24,marginBottom:14,textAlign:"center"}}>
+          <div style={{fontSize:18,marginBottom:8}}>🔒</div>
+          <div style={{fontSize:15,fontWeight:800,marginBottom:6,color:"#fff"}}>Save this as a PDF + unlock unlimited</div>
+          <div style={{fontSize:12,color:"#555",marginBottom:16,lineHeight:1.6}}>Pro members get PDF exports, unlimited analyses across all 12 tools, and case tracking.</div>
+          <button onClick={()=>window.open(STRIPE_LINK,"_blank")} className="action-btn" style={{width:"100%",padding:"14px 0",fontSize:14,marginBottom:8}}>Unlock Justify Pro — $9.99/mo →</button>
+          <div style={{fontSize:10,color:"#333"}}>Cancel anytime · No hidden fees</div>
+        </div>
+      )}
+
+      <div style={{background:"#18181f",border:"1px solid rgba(255,255,255,.07)",borderRadius:18,padding:22}}>
+        <div style={{fontSize:10,color:"#6d28d9",fontWeight:700,letterSpacing:1.2,marginBottom:8,textTransform:"uppercase"}}>Need more help?</div>
+        <div style={{fontSize:16,fontWeight:800,marginBottom:4,color:"#fff"}}>Book a 1-on-1 Session</div>
+        <div style={{fontSize:13,color:"#555",lineHeight:1.6,marginBottom:14}}>A real person reviews your documents and walks you through exactly what to do. Most cases resolved in one 45-min call.</div>
+        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
+          <div style={{fontSize:28,fontWeight:900,background:"linear-gradient(135deg,#a78bfa,#60a5fa)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>$47</div>
+          <div style={{fontSize:12,color:"#444",textDecoration:"line-through"}}>$300/hr</div>
+          <div style={{fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:100,background:"rgba(239,68,68,.12)",border:"1px solid rgba(239,68,68,.25)",color:"#f87171"}}>Limited spots</div>
+        </div>
+        <button onClick={()=>window.open(SESSION_LINK,"_blank")} className="action-btn" style={{width:"100%",padding:"13px 0",fontSize:13}}>Book My Session →</button>
+      </div>
+    </div>
+  );
+};
+
+const Paywall=({onClose})=>(
+  <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.88)",zIndex:999,display:"flex",alignItems:"center",justifyContent:"center",padding:20,backdropFilter:"blur(16px)"}} onClick={onClose}>
+    <div style={{maxWidth:420,width:"100%",background:"#18181f",border:"1px solid rgba(109,40,217,.3)",borderRadius:24,padding:32}} onClick={e=>e.stopPropagation()}>
+      <div style={{textAlign:"center",marginBottom:20}}>
+        <div style={{fontSize:32,marginBottom:8}}>⚖️</div>
+        <div style={{fontSize:22,fontWeight:900,color:"#fff",marginBottom:4}}>You've used your free analyses</div>
+        <div style={{fontSize:13,color:"#555",lineHeight:1.6}}>Upgrade to keep fighting back — unlimited access to all 12 tools.</div>
+      </div>
+      <div style={{background:"rgba(109,40,217,.08)",border:"1px solid rgba(109,40,217,.2)",borderRadius:14,padding:20,marginBottom:20}}>
+        <div style={{display:"flex",alignItems:"baseline",gap:6,marginBottom:12}}>
+          <div style={{fontSize:34,fontWeight:900,background:"linear-gradient(135deg,#a78bfa,#60a5fa)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>$9.99</div>
+          <div style={{fontSize:13,color:"#444"}}>/month</div>
+          <div style={{fontSize:11,color:"#333",textDecoration:"line-through",marginLeft:4}}>$49.99</div>
+        </div>
+        {["✓ Unlimited analyses — all 12 tools","✓ Contract & agreement generator","✓ Mortgage loan analyzer","✓ PDF download for every result","✓ Case tracker with AI check-ins","✓ Cancel anytime"].map(f=>(
+          <div key={f} style={{fontSize:12,color:"#888",marginBottom:5,display:"flex",alignItems:"center",gap:6}}>{f}</div>
+        ))}
+      </div>
+      <button onClick={()=>window.open(STRIPE_LINK,"_blank")} className="action-btn" style={{width:"100%",padding:"16px 0",fontSize:15,marginBottom:10}}>Unlock Justify Pro →</button>
+      <button onClick={onClose} style={{width:"100%",background:"none",border:"none",color:"#333",padding:"10px 0",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Maybe later</button>
+    </div>
+  </div>
+);
+
+// ── FIGHT TOOL ────────────────────────────────────────────────────────────
+const FightTool=({checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
+  const TOPICS=[
+    {id:"ticket",icon:"🚨",label:"Traffic Ticket",urgency:"med",sub:"Fight your ticket, know your rights"},
     {id:"debt",icon:"📞",label:"Debt Collector",urgency:"high",sub:"Stop the calls — know what they can't do"},
-    {id:"eviction",icon:"🏠",label:"Eviction / Landlord",urgency:"high",sub:"Respond to notices and buy yourself time"},
+    {id:"eviction",icon:"🏠",label:"Eviction / Landlord",urgency:"high",sub:"Respond to notices, buy yourself time"},
     {id:"court",icon:"⚖️",label:"Court Summons",urgency:"high",sub:"Know exactly what to do and when"},
-    {id:"employer",icon:"💼",label:"Employer Dispute",urgency:"med",sub:"Wage theft, wrongful termination, and more"},
+    {id:"employer",icon:"💼",label:"Employer Dispute",urgency:"med",sub:"Wrongful termination, discrimination"},
+    {id:"restraining",icon:"🚫",label:"Restraining Order",urgency:"high",sub:"How to get one or fight one"},
+    {id:"police",icon:"👮",label:"Police Encounter Rights",urgency:"high",sub:"What you can and cannot be asked to do"},
     {id:"other",icon:"📄",label:"Other Legal Issue",urgency:"low",sub:"Describe anything — AI reads it all"},
   ];
-
-  const SUPPORT_TOPICS_PAYER=[
-    {id:"lost_job",icon:"💼",label:"Lost Job / Income Dropped",urgency:"high",sub:"Emergency steps before you fall behind"},
-    {id:"behind",icon:"⚠️",label:"I'm Behind on Payments",urgency:"high",sub:"Consequences and options right now"},
-    {id:"modify",icon:"📋",label:"Want to Lower My Payment",urgency:"med",sub:"File a modification — changed circumstances"},
-    {id:"court",icon:"⚖️",label:"I Have a Court Date",urgency:"high",sub:"What to say, what to bring"},
-    {id:"jail",icon:"🔒",label:"Afraid of Going to Jail",urgency:"high",sub:"What actually happens and how to prevent it"},
-    {id:"other",icon:"💬",label:"Other Situation",urgency:"low",sub:"Describe it — get personalized guidance"},
-  ];
-
-  const SUPPORT_TOPICS_RECEIVER=[
-    {id:"not_paying",icon:"🚫",label:"They Haven't Paid",urgency:"high",sub:"Enforcement options ranked by speed"},
-    {id:"enforce",icon:"⚡",label:"Force Them to Pay",urgency:"high",sub:"License suspension, tax intercept, contempt"},
-    {id:"hiding",icon:"🕵️",label:"Hiding Their Income",urgency:"med",sub:"Request financial disclosure and prove it"},
-    {id:"court",icon:"⚖️",label:"I Have a Court Date",urgency:"high",sub:"How to present your case"},
-    {id:"increase",icon:"📈",label:"Need More Money",urgency:"med",sub:"When and how to request an increase"},
-    {id:"other",icon:"💬",label:"Other Situation",urgency:"low",sub:"Describe it — get personalized guidance"},
-  ];
-
-  const loadCases=()=>{try{return JSON.parse(localStorage.getItem("jsfy_cases")||"[]")}catch{return[]}};
-  const saveCases=c=>{try{localStorage.setItem("jsfy_cases",JSON.stringify(c))}catch{}};
-  const loadFree=()=>{try{return parseInt(localStorage.getItem("jsfy_free")||"0")}catch{return 0}};
-  const bumpFree=()=>{try{const n=loadFree()+1;localStorage.setItem("jsfy_free",n);return n}catch{return 1}};
-
-  const Bg=()=>(
-    <div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:0,overflow:"hidden"}}>
-      <div style={{position:"absolute",inset:0,backgroundImage:"linear-gradient(rgba(124,58,237,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.018) 1px,transparent 1px)",backgroundSize:"72px 72px"}}/>
-      <div style={{position:"absolute",top:-300,right:-200,width:700,height:700,borderRadius:"50%",background:"radial-gradient(circle,rgba(124,58,237,.09) 0%,transparent 60%)"}}/>
-      <div style={{position:"absolute",bottom:-200,left:-200,width:600,height:600,borderRadius:"50%",background:"radial-gradient(circle,rgba(37,99,235,.07) 0%,transparent 60%)"}}/>
-    </div>
-  );
-
-  const Spinner=({label="Analyzing your situation..."})=>(
-    <div className="glass fade-in" style={{padding:56,textAlign:"center"}}>
-      <div style={{position:"relative",width:64,height:64,margin:"0 auto 24px"}}>
-        <div style={{width:64,height:64,border:"3px solid #1a1a2e",borderTop:"3px solid #7c3aed",borderRadius:"50%",animation:"spin .7s linear infinite"}}/>
-        <div style={{width:64,height:64,border:"3px solid transparent",borderBottom:"3px solid #2563eb",borderRadius:"50%",position:"absolute",inset:0,animation:"spin 1.1s linear infinite reverse"}}/>
-        <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22}}>⚡</div>
-      </div>
-      <div style={{fontSize:16,fontWeight:800,color:"#fff",marginBottom:8}}>{label}</div>
-      <div style={{fontSize:12,color:"#333",animation:"pulse 1.5s infinite"}}>Powered by AI · Takes 10–20 seconds</div>
-    </div>
-  );
-
-  const Urgency=({level})=>{
-    const map={high:["badge-red","⚡ URGENT"],med:["badge-yellow","⚠ MODERATE"],low:["badge-green","✓ LOW"]};
-    const [cls,label]=map[level]||map.low;
-    return <span className={`badge ${cls}`}>{label}</span>;
+  const urgMap={high:["#ef4444","⚡ Urgent"],med:["#f59e0b","⚠ Moderate"],low:["#10b981","✓ Low"]};
+  const [phase,setPhase]=useState("topics");
+  const [topic,setTopic]=useState(null);
+  const [state,setState]=useState("");
+  const [doc,setDoc]=useState("");
+  const [situation,setSituation]=useState("");
+  const [result,setResult]=useState("");
+  const [err,setErr]=useState("");
+  const go=async()=>{
+    if(!situation.trim()&&!doc.trim()){setErr("Please describe your situation.");return;}
+    setErr("");setPhase("loading");
+    try{
+      const text=await callAI("You are an aggressive legal defense advisor for everyday people. Be direct, specific, cite actual laws. Give word-for-word scripts. Plain text only, use ALL CAPS section headers with colons.",`CASE: ${topic?.label}\nSTATE: ${state||"Not specified"}\n${doc?`DOCUMENT:\n${doc}\n\n`:""}SITUATION:\n${situation}\n\nProvide:\nWHAT THIS IS:\nYOUR RIGHTS:\nIMMEDIATE ACTIONS:\nEXACT SCRIPT — WHAT TO SAY:\nWHAT NOT TO DO:\nREALISTIC OUTCOME:\nFREE RESOURCES:`);
+      setResult(text);setPhase("result");onAnalysisDone();
+    }catch(e){setResult("Error: "+e.message);setPhase("result");}
   };
-
-  // ── API call — NO API KEY NEEDED, handled server-side ──
-  const callAI=async(system,userContent)=>{
-    const res=await fetch("/api/analyze",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1500,system,messages:[{role:"user",content:userContent}]})
-    });
-    const data=await res.json();
-    if(data.error) throw new Error(data.error);
-    return data.content?.find(b=>b.type==="text")?.text||"No response returned.";
-  };
-
-  const STRIPE_LINK="https://buy.stripe.com/fZu5kC9ot2uO27R3cvc3m00";
-
-  const Paywall=({onClose})=>{
-    return(
-      <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.9)",zIndex:999,display:"flex",alignItems:"center",justifyContent:"center",padding:20,backdropFilter:"blur(12px)"}} onClick={onClose}>
-        <div className="glass fade-up" style={{maxWidth:440,width:"100%",padding:36,borderColor:"rgba(124,58,237,.3)",animation:"glowPulse 2s infinite"}} onClick={e=>e.stopPropagation()}>
-          <div className="badge badge-purple" style={{marginBottom:20}}>🔒 FREE ANALYSIS USED</div>
-          <div style={{fontSize:28,fontWeight:900,letterSpacing:-.5,marginBottom:8,lineHeight:1.2}}>You've seen what Justify can do.</div>
-          <div style={{fontSize:14,color:"#555",lineHeight:1.7,marginBottom:24}}>Unlock unlimited access to every tool for less than a coffee a week.</div>
-          <div style={{background:"linear-gradient(135deg,rgba(124,58,237,.1),rgba(37,99,235,.06))",border:"1px solid rgba(124,58,237,.2)",borderRadius:16,padding:20,marginBottom:24}}>
-            <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:12}}>
-              <div style={{fontSize:38,fontWeight:900,background:"linear-gradient(135deg,#a78bfa,#60a5fa)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>$9.99</div>
-              <div style={{fontSize:14,color:"#444"}}>/month</div>
-              <div style={{fontSize:12,color:"#333",textDecoration:"line-through"}}>$49.99</div>
-            </div>
-            {["✓ Unlimited analyses across all 6 tools","✓ Full response letter generator","✓ Case tracker with AI check-ins","✓ Document scanner — upload any letter","✓ 50 states covered","✓ Cancel anytime"].map(f=>(
-              <div key={f} style={{fontSize:13,color:"#777",marginBottom:6}}>{f}</div>
-            ))}
-          </div>
-          <button onClick={()=>window.open(STRIPE_LINK,"_blank")} className="action-btn" style={{width:"100%",padding:"16px 0",fontSize:15,marginBottom:14}}>Unlock Justify — $9.99/mo →</button>
-          <div style={{textAlign:"center",fontSize:11,color:"#222",marginBottom:14}}>Secure · Cancel anytime · No hidden fees</div>
-          <div style={{borderTop:"1px solid rgba(255,255,255,.05)",paddingTop:14,textAlign:"center"}}>
-            <button onClick={onClose} style={{background:"none",border:"1px solid rgba(255,255,255,.06)",borderRadius:10,color:"#333",padding:"9px 20px",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Maybe later</button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const generatePDF=(title,content)=>{
-    const date=new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
-    const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>${title}</title><style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;padding:0 40px;color:#1a1a1a;line-height:1.8}h1{font-size:22px;border-bottom:2px solid #1a1a1a;padding-bottom:12px;margin-bottom:8px}.date{font-size:13px;color:#888;margin-bottom:32px}pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:14px;line-height:1.9}.footer{margin-top:48px;padding-top:16px;border-top:1px solid #ccc;font-size:11px;color:#999}</style></head><body><h1>Justify — ${title}</h1><div class="date">Generated: ${date}</div><pre>${content}</pre><div class="footer">⚠ This document was generated by Justify AI and provides legal information only, not legal advice.</div></body></html>`;
-    const blob=new Blob([html],{type:"text/html"});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement("a");
-    a.href=url;a.download=`Justify-${title.replace(/\s+/g,"-")}-${Date.now()}.html`;
-    a.click();URL.revokeObjectURL(url);
-  };
-
-  const ResultPanel=({result,title,icon,onNew,onSave,isPro,onUpgrade})=>{
-    const [copied,setCopied]=useState(false);
-    const copy=()=>{navigator.clipboard?.writeText(result);setCopied(true);setTimeout(()=>setCopied(false),2000)};
-    return(
-      <div className="fade-up">
-        <div className="glass-purple" style={{padding:"14px 20px",marginBottom:14,display:"flex",alignItems:"center",gap:10}}>
-          <div style={{width:8,height:8,borderRadius:"50%",background:"#7c3aed",animation:"pulse 1.2s infinite",flexShrink:0}}/>
-          <div style={{fontSize:13,fontWeight:700,color:"#a78bfa"}}>{icon} {title} — Analysis ready</div>
-        </div>
-        <div className="glass" style={{padding:28,marginBottom:14,position:"relative"}}>
-          <pre style={{whiteSpace:"pre-wrap",fontFamily:"inherit",fontSize:14,color:"#d0d0d0",lineHeight:1.9}}>{result}</pre>
-          <div style={{display:"flex",gap:10,marginTop:24,paddingTop:20,borderTop:"1px solid rgba(255,255,255,.05)"}}>
-            <button onClick={copy} className="action-btn" style={{flex:1,padding:"13px 0",fontSize:13}}>{copied?"✓ Copied!":"📋 Copy"}</button>
-            {isPro&&<button onClick={()=>generatePDF(title||"Legal Analysis",result)} className="ghost-btn" style={{flex:1,padding:"13px 0",fontSize:13}}>📄 Download PDF</button>}
-            {isPro&&onSave&&<button onClick={onSave} className="ghost-btn" style={{flex:1,padding:"13px 0",fontSize:13}}>📁 Save</button>}
-          </div>
-          <button onClick={onNew} style={{marginTop:10,width:"100%",background:"none",border:"1px solid rgba(255,255,255,.05)",borderRadius:10,color:"#333",padding:"11px 0",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>← New Analysis</button>
-        </div>
-        <div style={{background:"linear-gradient(135deg,rgba(124,58,237,.1),rgba(37,99,235,.06))",border:"1px solid rgba(124,58,237,.25)",borderRadius:20,padding:26}}>
-          <div style={{fontSize:10,color:"#a78bfa",fontWeight:700,letterSpacing:1.2,marginBottom:8}}>WANT IT HANDLED?</div>
-          <div style={{fontSize:19,fontWeight:900,marginBottom:6,letterSpacing:-.3}}>Book a 1-on-1 Session</div>
-          <div style={{fontSize:13,color:"#555",lineHeight:1.7,marginBottom:18}}>We'll review your documents together live and tell you exactly what to do.</div>
-          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:18}}>
-            <div style={{fontSize:30,fontWeight:900,background:"linear-gradient(135deg,#a78bfa,#60a5fa)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>$47</div>
-            <div style={{fontSize:12,color:"#333",textDecoration:"line-through"}}>$300</div>
-            <div className="badge badge-red">🔥 LIMITED</div>
-          </div>
-          <button onClick={()=>window.open(STRIPE_LINK,"_blank")} className="action-btn" style={{width:"100%",padding:"15px 0",fontSize:14}}>Book My Session →</button>
-        </div>
-      </div>
-    );
-  };
-
-  const FightTool=({checkAccess,onAnalysisDone,onSaveCase,isPro,onUpgrade})=>{
-    const [phase,setPhase]=useState("topics");
-    const [topic,setTopic]=useState(null);
-    const [state,setState]=useState("");
-    const [doc,setDoc]=useState("");
-    const [situation,setSituation]=useState("");
-    const [result,setResult]=useState("");
-    const [err,setErr]=useState("");
-    const go=async()=>{
-      if(!checkAccess())return;
-      if(!situation.trim()&&!doc.trim()){setErr("Describe your situation or paste your document.");return;}
-      setErr("");setPhase("loading");
-      try{
-        const text=await callAI(
-          "You are an aggressive legal defense advisor for everyday people. Be direct, specific, cite laws, give exact scripts. Plain text only — no markdown, no bullets. Use ALL CAPS section headers followed by colons.",
-          `CASE: ${topic?.label}\nSTATE: ${state||"Not specified"}\n${doc?`DOCUMENT:\n${doc}\n\n`:""}SITUATION:\n${situation}\n\nGive:\nWHAT THIS IS:\nTHEIR RIGHTS:\nIMMEDIATE ACTIONS:\nWHAT TO SAY:\nWHAT NOT TO DO:\nREALISTIC OUTCOME:`
-        );
-        setResult(text);setPhase("result");onAnalysisDone();
-      }catch(e){setResult("Error: "+e.message);setPhase("result");}
-    };
-    const save=()=>onSaveCase({id:Date.now(),tool:"Legal Defense",icon:"⚔️",topic:topic?.label,state,situation:situation.slice(0,100),result,status:"Active",urgency:topic?.urgency||"med",date:new Date().toLocaleDateString(),deadline:"",notes:""});
-    const reset=()=>{setPhase("topics");setTopic(null);setSituation("");setDoc("");setResult("");setErr("");};
-    if(phase==="loading")return <Spinner/>;
-    if(phase==="result")return <ResultPanel result={result} title={topic?.label} icon={topic?.icon} onNew={reset} onSave={save} isPro={isPro} onUpgrade={onUpgrade}/>;
-    return(
-      <div>
-        {phase==="topics"&&(
-          <div className="fade-up">
-            <div style={{marginBottom:22}}>
-              <div style={{fontSize:11,color:"#ef4444",fontWeight:700,letterSpacing:1.2,marginBottom:6}}>⚔️ LEGAL DEFENSE</div>
-              <div style={{fontSize:22,fontWeight:900,letterSpacing:-.5}}>What are you dealing with?</div>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
-              {FIGHT_TOPICS.map(t=>(
-                <button key={t.id} onClick={()=>{setTopic(t);setPhase("input");}} className="topic-card">
-                  <span style={{fontSize:22,flexShrink:0}}>{t.icon}</span>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:14,fontWeight:700,color:"#f0f0f0",marginBottom:2}}>{t.label}</div>
-                    <div style={{fontSize:12,color:"#555"}}>{t.sub}</div>
-                  </div>
-                  <Urgency level={t.urgency}/>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-        {phase==="input"&&(
-          <div className="fade-up">
-            <button onClick={()=>setPhase("topics")} style={{background:"none",border:"none",color:"#444",fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:18,display:"flex",alignItems:"center",gap:5}}>← Back</button>
-            <div style={{marginBottom:20}}>
-              <div style={{fontSize:11,color:"#ef4444",fontWeight:700,letterSpacing:1.2,marginBottom:4}}>{topic?.icon} {topic?.label?.toUpperCase()}</div>
-              <div style={{fontSize:20,fontWeight:900}}>Tell us your situation.</div>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:12}}>
-              <select value={state} onChange={e=>setState(e.target.value)} className="field">
-                <option value="">Your state (recommended)</option>
-                {US_STATES.map(s=><option key={s}>{s}</option>)}
-              </select>
-              <textarea value={doc} onChange={e=>setDoc(e.target.value)} className="field" placeholder="Paste the exact text of your letter, notice, or document here (optional)..." style={{minHeight:90}}/>
-              <textarea value={situation} onChange={e=>{setSituation(e.target.value);setErr("");}} className="field" placeholder="Describe what happened, when, any deadlines, what they said..." style={{minHeight:110}}/>
-              {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
-              <button onClick={go} disabled={!situation.trim()&&!doc.trim()} className="action-btn" style={{padding:"17px 0",fontSize:15}}>⚔️ Analyze My Case</button>
-              <div style={{fontSize:11,color:"#222",textAlign:"center"}}>Your information is never stored or shared.</div>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const SupportTool=({checkAccess,onAnalysisDone,onSaveCase,isPro,onUpgrade})=>{
-    const [side,setSide]=useState(null);
-    const [phase,setPhase]=useState("side");
-    const [topic,setTopic]=useState(null);
-    const [state,setState]=useState("");
-    const [order,setOrder]=useState("");
-    const [income,setIncome]=useState("");
-    const [situation,setSituation]=useState("");
-    const [result,setResult]=useState("");
-    const [err,setErr]=useState("");
-    const topics=side==="payer"?SUPPORT_TOPICS_PAYER:SUPPORT_TOPICS_RECEIVER;
-    const go=async()=>{
-      if(!checkAccess())return;
-      if(!situation.trim()){setErr("Please describe your situation.");return;}
-      setErr("");setPhase("loading");
-      const sys=side==="payer"?"You are a child support advisor for the person who PAYS. Be empathetic and direct. Plain text only, ALL CAPS headers with colons, no markdown.":"You are a child support advisor for the person who RECEIVES. Be empathetic and direct. Plain text only, ALL CAPS headers with colons, no markdown.";
-      try{
-        const text=await callAI(sys,`SITUATION TYPE: ${topic?.label}\nSTATE: ${state||"Not specified"}\nCURRENT ORDER: ${order||"Not provided"}\nINCOME: ${income||"Not provided"}\n\nSITUATION:\n${situation}\n\nGive:\nWHAT'S HAPPENING:\nTHEIR RIGHTS:\nWHAT TO DO RIGHT NOW:\nWHAT TO SAY:\nWHAT NOT TO DO:\nREALISTIC OUTCOME:\nFREE RESOURCES:`);
-        setResult(text);setPhase("result");onAnalysisDone();
-      }catch(e){setResult("Error: "+e.message);setPhase("result");}
-    };
-    const save=()=>onSaveCase({id:Date.now(),tool:"Child Support",icon:"⚖️",topic:`${side==="payer"?"Payer":"Receiver"} — ${topic?.label}`,state,situation:situation.slice(0,100),result,status:"Active",urgency:topic?.urgency||"med",date:new Date().toLocaleDateString(),deadline:"",notes:""});
-    const reset=()=>{setSide(null);setPhase("side");setTopic(null);setSituation("");setResult("");setErr("");};
-    if(phase==="loading")return <Spinner label="Analyzing your child support situation..."/>;
-    if(phase==="result")return <ResultPanel result={result} title={topic?.label} icon="⚖️" onNew={reset} onSave={save} isPro={isPro} onUpgrade={onUpgrade}/>;
-    return(
-      <div>
-        {phase==="side"&&(
-          <div className="fade-up">
-            <div style={{marginBottom:24}}>
-              <div style={{fontSize:11,color:"#3b82f6",fontWeight:700,letterSpacing:1.2,marginBottom:6}}>⚖️ CHILD SUPPORT</div>
-              <div style={{fontSize:22,fontWeight:900,letterSpacing:-.5}}>Which side are you on?</div>
-            </div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
-              {[["payer","💼","I Pay","Modification · Behind · Court · Jail"],["receiver","📬","I Receive","Enforcement · Collect · Court · Increase"]].map(([s,icon,label,sub])=>(
-                <button key={s} onClick={()=>{setSide(s);setPhase("topics");}} style={{padding:24,borderRadius:18,cursor:"pointer",border:`1px solid ${s==="payer"?"rgba(59,130,246,.3)":"rgba(139,92,246,.3)"}`,background:s==="payer"?"rgba(59,130,246,.06)":"rgba(139,92,246,.06)",transition:"all .25s",fontFamily:"inherit",textAlign:"left"}}>
-                  <div style={{fontSize:32,marginBottom:12}}>{icon}</div>
-                  <div style={{fontSize:18,fontWeight:900,color:"#fff",marginBottom:6}}>{label}</div>
-                  <div style={{fontSize:12,color:"#555",lineHeight:1.5}}>{sub}</div>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-        {phase==="topics"&&(
-          <div className="fade-up">
-            <button onClick={()=>setPhase("side")} style={{background:"none",border:"none",color:"#444",fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:18,display:"flex",alignItems:"center",gap:5}}>← Back</button>
-            <div style={{marginBottom:20}}>
-              <div style={{fontSize:11,color:"#3b82f6",fontWeight:700,letterSpacing:1.2,marginBottom:6}}>{side==="payer"?"💼 PAYER":"📬 RECEIVER"}</div>
-              <div style={{fontSize:20,fontWeight:900}}>What's your situation?</div>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {topics.map(t=>(
-                <button key={t.id} onClick={()=>{setTopic(t);setPhase("input");}} className="topic-card">
-                  <span style={{fontSize:20,flexShrink:0}}>{t.icon}</span>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:14,fontWeight:700,color:"#f0f0f0",marginBottom:2}}>{t.label}</div>
-                    <div style={{fontSize:12,color:"#555"}}>{t.sub}</div>
-                  </div>
-                  <Urgency level={t.urgency}/>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-        {phase==="input"&&(
-          <div className="fade-up">
-            <button onClick={()=>setPhase("topics")} style={{background:"none",border:"none",color:"#444",fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:18,display:"flex",alignItems:"center",gap:5}}>← Back</button>
-            <div style={{marginBottom:20}}>
-              <div style={{fontSize:11,color:"#3b82f6",fontWeight:700,letterSpacing:1.2,marginBottom:4}}>{topic?.icon} {topic?.label?.toUpperCase()}</div>
-              <div style={{fontSize:20,fontWeight:900}}>Describe your situation.</div>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:12}}>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-                <select value={state} onChange={e=>setState(e.target.value)} className="field"><option value="">State</option>{US_STATES.map(s=><option key={s}>{s}</option>)}</select>
-                <input value={order} onChange={e=>setOrder(e.target.value)} placeholder="Current order ($)" className="field"/>
-              </div>
-              <input value={income} onChange={e=>setIncome(e.target.value)} placeholder={side==="payer"?"Your monthly income":"Their known income"} className="field"/>
-              <textarea value={situation} onChange={e=>{setSituation(e.target.value);setErr("");}} className="field" placeholder="What happened? Include dates, amounts, and any deadlines..." style={{minHeight:110}}/>
-              {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
-              <button onClick={go} disabled={!situation.trim()} className="action-btn" style={{padding:"17px 0",fontSize:15}}>⚖️ Get My Guidance</button>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const ExpungeTool=({checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
-    const [state,setState]=useState("");
-    const [charge,setCharge]=useState("");
-    const [year,setYear]=useState("");
-    const [outcome,setOutcome]=useState("");
-    const [situation,setSituation]=useState("");
-    const [result,setResult]=useState("");
-    const [loading,setLoading]=useState(false);
-    const [err,setErr]=useState("");
-    const go=async()=>{
-      if(!checkAccess())return;
-      if(!charge.trim()||!state){setErr("Please fill in at least the state and charge.");return;}
-      setErr("");setLoading(true);
-      try{
-        const text=await callAI("You are a criminal record expungement expert. Help everyday people understand if they qualify to clear their record. Be specific about eligibility, timelines, and exact steps. Plain text only, ALL CAPS headers with colons, no markdown.",`STATE: ${state}\nCHARGE: ${charge}\nYEAR: ${year||"Unknown"}\nOUTCOME: ${outcome||"Not specified"}\nSITUATION: ${situation||"Standard expungement inquiry"}\n\nGive:\nDO THEY QUALIFY:\nWAITING PERIOD:\nEXACT STEPS TO FILE:\nWHAT IT COSTS:\nWHAT EXPUNGEMENT DOES AND DOESN'T DO:\nFREE RESOURCES IN THEIR STATE:`);
-        setResult(text);onAnalysisDone();
-      }catch(e){setResult("Error: "+e.message);}
-      setLoading(false);
-    };
-    const reset=()=>{setResult("");setState("");setCharge("");setYear("");setOutcome("");setSituation("");setErr("");};
-    if(loading)return <Spinner label="Checking your expungement eligibility..."/>;
-    if(result)return <ResultPanel result={result} title="Expungement Analysis" icon="📜" onNew={reset} isPro={isPro} onUpgrade={onUpgrade}/>;
-    return(
-      <div className="fade-up">
-        <div style={{marginBottom:22}}>
-          <div style={{fontSize:11,color:"#10b981",fontWeight:700,letterSpacing:1.2,marginBottom:6}}>📜 RECORD EXPUNGEMENT</div>
-          <div style={{fontSize:22,fontWeight:900,letterSpacing:-.5,marginBottom:4}}>Let's see if you qualify.</div>
-          <div style={{fontSize:13,color:"#444"}}>Old charges blocking jobs or housing? You may be able to clear them.</div>
-        </div>
-        <div style={{display:"flex",flexDirection:"column",gap:12}}>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-            <select value={state} onChange={e=>setState(e.target.value)} className="field"><option value="">Your state *</option>{US_STATES.map(s=><option key={s}>{s}</option>)}</select>
-            <input value={year} onChange={e=>setYear(e.target.value)} placeholder="Year of charge (approx)" className="field"/>
-          </div>
-          <input value={charge} onChange={e=>setCharge(e.target.value)} placeholder="What was the charge? (e.g. possession, DUI, theft) *" className="field"/>
-          <select value={outcome} onChange={e=>setOutcome(e.target.value)} className="field">
-            <option value="">Case outcome</option>
-            {["Convicted — served time","Convicted — probation only","Convicted — fine only","Charges dropped","Case dismissed","Acquitted / Not guilty","Pled guilty","Deferred adjudication"].map(o=><option key={o}>{o}</option>)}
-          </select>
-          <textarea value={situation} onChange={e=>{setSituation(e.target.value);setErr("");}} className="field" placeholder="Anything else? Multiple charges, prior record, why you need this cleared..." style={{minHeight:90}}/>
-          {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
-          <button onClick={go} disabled={!charge.trim()||!state} className="action-btn" style={{padding:"17px 0",fontSize:15}}>📜 Check My Eligibility</button>
-        </div>
-      </div>
-    );
-  };
-
-  const WageTool=({checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
-    const [state,setState]=useState("");
-    const [issueType,setIssueType]=useState("");
-    const [amount,setAmount]=useState("");
-    const [situation,setSituation]=useState("");
-    const [result,setResult]=useState("");
-    const [loading,setLoading]=useState(false);
-    const [err,setErr]=useState("");
-    const go=async()=>{
-      if(!checkAccess())return;
-      if(!situation.trim()){setErr("Describe your situation.");return;}
-      setErr("");setLoading(true);
-      try{
-        const text=await callAI("You are a wage theft and employment law expert. Help workers recover stolen wages and understand their rights under FLSA and state laws. Be aggressive and specific. Plain text only, ALL CAPS headers with colons.",`STATE: ${state||"Not specified"}\nISSUE TYPE: ${issueType||"General wage theft"}\nESTIMATED AMOUNT OWED: ${amount||"Unknown"}\n\nSITUATION:\n${situation}\n\nGive:\nWHAT THIS IS:\nTHEIR RIGHTS:\nHOW MUCH THEY CAN RECOVER:\nEXACT STEPS TO FILE A CLAIM:\nWHAT TO SAY TO EMPLOYER:\nFREE AGENCIES TO CONTACT:`);
-        setResult(text);onAnalysisDone();
-      }catch(e){setResult("Error: "+e.message);}
-      setLoading(false);
-    };
-    const reset=()=>{setResult("");setState("");setIssueType("");setAmount("");setSituation("");setErr("");};
-    if(loading)return <Spinner label="Calculating your wage claim..."/>;
-    if(result)return <ResultPanel result={result} title="Wage Theft Analysis" icon="💸" onNew={reset} isPro={isPro} onUpgrade={onUpgrade}/>;
-    return(
-      <div className="fade-up">
-        <div style={{marginBottom:22}}>
-          <div style={{fontSize:11,color:"#f59e0b",fontWeight:700,letterSpacing:1.2,marginBottom:6}}>💸 WAGE THEFT FIGHTER</div>
-          <div style={{fontSize:22,fontWeight:900,letterSpacing:-.5,marginBottom:4}}>They owe you money. Let's get it.</div>
-        </div>
-        <div style={{display:"flex",flexDirection:"column",gap:12}}>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-            <select value={state} onChange={e=>setState(e.target.value)} className="field"><option value="">Your state</option>{US_STATES.map(s=><option key={s}>{s}</option>)}</select>
-            <input value={amount} onChange={e=>setAmount(e.target.value)} placeholder="Estimated amount owed ($)" className="field"/>
-          </div>
-          <select value={issueType} onChange={e=>setIssueType(e.target.value)} className="field">
-            <option value="">What type of wage theft?</option>
-            {["Unpaid overtime","Minimum wage violation","Stolen tips","Off-the-clock work","Illegal paycheck deductions","Final paycheck not received","Misclassified as contractor","Bounce or late paychecks"].map(o=><option key={o}>{o}</option>)}
-          </select>
-          <textarea value={situation} onChange={e=>{setSituation(e.target.value);setErr("");}} className="field" placeholder="What happened?" style={{minHeight:110}}/>
-          {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
-          <button onClick={go} disabled={!situation.trim()} className="action-btn" style={{padding:"17px 0",fontSize:15}}>💸 Build My Wage Claim</button>
-        </div>
-      </div>
-    );
-  };
-
-  const LoanTool=({checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
-    const [loanType,setLoanType]=useState("");
-    const [amount,setAmount]=useState("");
-    const [rate,setRate]=useState("");
-    const [terms,setTerms]=useState("");
-    const [result,setResult]=useState("");
-    const [loading,setLoading]=useState(false);
-    const [err,setErr]=useState("");
-    const go=async()=>{
-      if(!checkAccess())return;
-      if(!terms.trim()&&!loanType){setErr("Fill in at least the loan type and terms.");return;}
-      setErr("");setLoading(true);
-      try{
-        const text=await callAI("You are a predatory lending expert. Analyze loan terms and identify traps, hidden fees, and illegal practices. Plain text only, ALL CAPS headers with colons.",`LOAN TYPE: ${loanType||"Unknown"}\nLOAN AMOUNT: ${amount||"Not specified"}\nINTEREST RATE: ${rate||"Not specified"}\n\nLOAN TERMS:\n${terms||"Not provided"}\n\nGive:\nRED FLAGS:\nHIDDEN COSTS:\nIS THIS LEGAL:\nTRUE COST OF THIS LOAN:\nBETTER ALTERNATIVES:\nHOW TO GET OUT IF ALREADY SIGNED:`);
-        setResult(text);onAnalysisDone();
-      }catch(e){setResult("Error: "+e.message);}
-      setLoading(false);
-    };
-    const reset=()=>{setResult("");setLoanType("");setAmount("");setRate("");setTerms("");setErr("");};
-    if(loading)return <Spinner label="Decoding your loan terms..."/>;
-    if(result)return <ResultPanel result={result} title="Loan Analysis" icon="📄" onNew={reset} isPro={isPro} onUpgrade={onUpgrade}/>;
-    return(
-      <div className="fade-up">
-        <div style={{marginBottom:22}}>
-          <div style={{fontSize:11,color:"#8b5cf6",fontWeight:700,letterSpacing:1.2,marginBottom:6}}>📄 PREDATORY LOAN DECODER</div>
-          <div style={{fontSize:22,fontWeight:900,letterSpacing:-.5,marginBottom:4}}>Know what you're signing.</div>
-        </div>
-        <div style={{display:"flex",flexDirection:"column",gap:12}}>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-            <select value={loanType} onChange={e=>setLoanType(e.target.value)} className="field">
-              <option value="">Loan type</option>
-              {["Payday loan","Title loan","Personal loan","Buy here pay here auto","Rent-to-own","Cash advance","Installment loan","Other"].map(o=><option key={o}>{o}</option>)}
-            </select>
-            <input value={amount} onChange={e=>setAmount(e.target.value)} placeholder="Loan amount ($)" className="field"/>
-          </div>
-          <input value={rate} onChange={e=>setRate(e.target.value)} placeholder="Interest rate (e.g. 24% APR)" className="field"/>
-          <textarea value={terms} onChange={e=>{setTerms(e.target.value);setErr("");}} className="field" placeholder="Paste the loan terms or describe what they told you..." style={{minHeight:120}}/>
-          {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
-          <button onClick={go} disabled={!terms.trim()&&!loanType} className="action-btn" style={{padding:"17px 0",fontSize:15}}>📄 Decode This Loan</button>
-        </div>
-      </div>
-    );
-  };
-
-  const DocsTool=({checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
-    const [docText,setDocText]=useState("");
-    const [context,setContext]=useState("");
-    const [result,setResult]=useState("");
-    const [loading,setLoading]=useState(false);
-    const [err,setErr]=useState("");
-    const go=async()=>{
-      if(!checkAccess())return;
-      if(!docText.trim()){setErr("Paste your document text first.");return;}
-      setErr("");setLoading(true);
-      try{
-        const text=await callAI("You are an expert document analyzer for legal and financial documents. Plain text only, ALL CAPS headers with colons.",`DOCUMENT TEXT:\n${docText}\n\nADDITIONAL CONTEXT: ${context||"None provided"}\n\nGive:\nWHAT THIS DOCUMENT IS:\nKEY POINTS THEY NEED TO KNOW:\nTHEIR RIGHTS AND OBLIGATIONS:\nDANGER ZONES:\nIMPORTANT DEADLINES:\nWHAT TO DO NEXT:`);
-        setResult(text);onAnalysisDone();
-      }catch(e){setResult("Error: "+e.message);}
-      setLoading(false);
-    };
-    const reset=()=>{setResult("");setDocText("");setContext("");setErr("");};
-    if(loading)return <Spinner label="Reading your document..."/>;
-    if(result)return <ResultPanel result={result} title="Document Analysis" icon="🔍" onNew={reset} isPro={isPro} onUpgrade={onUpgrade}/>;
-    return(
-      <div className="fade-up">
-        <div style={{marginBottom:22}}>
-          <div style={{fontSize:11,color:"#a78bfa",fontWeight:700,letterSpacing:1.2,marginBottom:6}}>🔍 DOCUMENT SCANNER</div>
-          <div style={{fontSize:22,fontWeight:900,letterSpacing:-.5,marginBottom:4}}>Paste any document. AI reads it all.</div>
-        </div>
-        <div style={{display:"flex",flexDirection:"column",gap:12}}>
-          <textarea value={docText} onChange={e=>{setDocText(e.target.value);setErr("");}} className="field" placeholder="Paste the full text of your document, letter, notice, or contract here..." style={{minHeight:160}}/>
-          <textarea value={context} onChange={e=>setContext(e.target.value)} className="field" placeholder="Any context? (e.g. 'I live in Texas', 'I have 10 days to respond')" style={{minHeight:60}}/>
-          {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
-          <button onClick={go} disabled={!docText.trim()} className="action-btn" style={{padding:"17px 0",fontSize:15}}>🔍 Scan This Document</button>
-        </div>
-      </div>
-    );
-  };
-
-  const Tracker=({cases,onUpdate,onDelete})=>{
-    const [open,setOpen]=useState(null);
-    const [advice,setAdvice]=useState({});
-    const [loadingAdv,setLoadingAdv]=useState(null);
-    const getAdv=async(c)=>{
-      setLoadingAdv(c.id);
-      try{
-        const text=await callAI("You are a case advisor. Give specific next-step advice in 3-4 sentences. Direct and actionable. Plain text only.",`Tool: ${c.tool}\nTopic: ${c.topic}\nStatus: ${c.status}\nSituation: ${c.situation}\nDeadline: ${c.deadline||"None"}\n\nWhat should they do next right now?`);
-        setAdvice(a=>({...a,[c.id]:text}));
-      }catch(e){setAdvice(a=>({...a,[c.id]:"Error: "+e.message}));}
-      setLoadingAdv(null);
-    };
-    if(!cases.length)return(
-      <div className="fade-in" style={{textAlign:"center",padding:"60px 20px"}}>
-        <div style={{fontSize:48,marginBottom:16}}>📁</div>
-        <div style={{fontSize:18,fontWeight:800,marginBottom:8}}>No cases saved yet</div>
-        <div style={{fontSize:13,color:"#444",lineHeight:1.7}}>After you get an analysis, tap "Save Case" to track it here.</div>
-      </div>
-    );
-    const STATUS_COLOR={Active:"#ef4444",Pending:"#f59e0b","In Progress":"#3b82f6",Resolved:"#10b981"};
-    return(
-      <div className="fade-up">
+  const reset=()=>{setPhase("topics");setTopic(null);setSituation("");setDoc("");setResult("");setErr("");};
+  if(phase==="loading")return <Spinner/>;
+  if(phase==="result")return <ResultPanel result={result} title={topic?.label} icon={topic?.icon} onNew={reset} isPro={isPro} onUpgrade={onUpgrade}/>;
+  return(
+    <div>
+      {phase==="topics"&&(<div className="fade-up">
         <div style={{marginBottom:20}}>
-          <div style={{fontSize:11,color:"#a78bfa",fontWeight:700,letterSpacing:1.2,marginBottom:6}}>📁 CASE TRACKER</div>
-          <div style={{fontSize:22,fontWeight:900}}>{cases.length} Saved {cases.length===1?"Case":"Cases"}</div>
+          <div style={{fontSize:11,color:"#ef4444",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>Legal Defense</div>
+          <div style={{fontSize:22,fontWeight:800,lineHeight:1.2}}>What are you dealing with?</div>
         </div>
-        <div style={{display:"flex",flexDirection:"column",gap:10}}>
-          {cases.map(c=>(
-            <div key={c.id} className="glass" style={{padding:20,cursor:"pointer",borderColor:open===c.id?"rgba(124,58,237,.3)":"rgba(255,255,255,.06)"}} onClick={()=>setOpen(open===c.id?null:c.id)}>
-              <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12}}>
-                <div style={{flex:1}}>
-                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
-                    <span style={{fontSize:18}}>{c.icon}</span>
-                    <div style={{fontSize:14,fontWeight:700}}>{c.tool}</div>
-                    <div style={{fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:100,background:`${STATUS_COLOR[c.status]}18`,border:`1px solid ${STATUS_COLOR[c.status]}44`,color:STATUS_COLOR[c.status]}}>{c.status}</div>
-                  </div>
-                  <div style={{fontSize:12,color:"#444"}}>{c.situation}</div>
-                </div>
-                <div style={{color:"#333",fontSize:14}}>{open===c.id?"▲":"▼"}</div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {TOPICS.map(t=>{const [c,l]=urgMap[t.urgency]||urgMap.low;return(
+            <button key={t.id} onClick={()=>{setTopic(t);setPhase("input");}} className="topic-card">
+              <span style={{fontSize:22,flexShrink:0}}>{t.icon}</span>
+              <div style={{flex:1}}>
+                <div style={{fontSize:14,fontWeight:700,color:"#f0f0f0",marginBottom:2}}>{t.label}</div>
+                <div style={{fontSize:12,color:"#555"}}>{t.sub}</div>
               </div>
-              {open===c.id&&(
-                <div style={{marginTop:16,paddingTop:16,borderTop:"1px solid rgba(255,255,255,.05)"}} onClick={e=>e.stopPropagation()}>
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
-                    <select value={c.status} onChange={e=>onUpdate(c.id,{status:e.target.value})} className="field" style={{padding:"10px 14px",fontSize:13}}>
-                      {["Active","Pending","In Progress","Resolved"].map(s=><option key={s}>{s}</option>)}
-                    </select>
-                    <input type="date" value={c.deadline} onChange={e=>onUpdate(c.id,{deadline:e.target.value})} className="field" style={{padding:"10px 14px",fontSize:13}}/>
-                  </div>
-                  <textarea value={c.notes} onChange={e=>onUpdate(c.id,{notes:e.target.value})} className="field" placeholder="Add notes..." style={{minHeight:70,fontSize:13,marginBottom:12}}/>
-                  <div style={{display:"flex",gap:8}}>
-                    <button onClick={()=>getAdv(c)} className="action-btn" style={{flex:2,padding:"11px 0",fontSize:13,opacity:loadingAdv===c.id?.6:1}}>{loadingAdv===c.id?"⏳ Thinking...":"⚡ Get AI Advice"}</button>
-                    <button onClick={()=>{onDelete(c.id);setOpen(null);}} className="ghost-btn" style={{flex:1,padding:"11px 0",fontSize:12}}>🗑 Delete</button>
-                  </div>
-                  {advice[c.id]&&<div className="glass-purple fade-in" style={{padding:16,marginTop:12}}><div style={{fontSize:10,color:"#a78bfa",fontWeight:700,letterSpacing:1,marginBottom:8}}>AI NEXT STEP</div><div style={{fontSize:13,color:"#c0c0c0",lineHeight:1.8}}>{advice[c.id]}</div></div>}
-                </div>
-              )}
+              <span style={{fontSize:10,fontWeight:700,padding:"3px 8px",borderRadius:100,background:`${c}18`,border:`1px solid ${c}44`,color:c,flexShrink:0}}>{l}</span>
+            </button>
+          );})}
+        </div>
+      </div>)}
+      {phase==="input"&&(<div className="fade-up">
+        <button onClick={()=>setPhase("topics")} style={{background:"none",border:"none",color:"#555",fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:18,display:"flex",alignItems:"center",gap:4}}>← Back</button>
+        <div style={{marginBottom:18}}>
+          <div style={{fontSize:11,color:"#ef4444",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>{topic?.icon} {topic?.label}</div>
+          <div style={{fontSize:20,fontWeight:800}}>Tell us what happened.</div>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          <select value={state} onChange={e=>setState(e.target.value)} className="field"><option value="">Your state (recommended)</option>{US_STATES.map(s=><option key={s}>{s}</option>)}</select>
+          <textarea value={doc} onChange={e=>setDoc(e.target.value)} className="field" placeholder="Paste any letter, notice, or document text here (optional)..." style={{minHeight:80}}/>
+          <textarea value={situation} onChange={e=>{setSituation(e.target.value);setErr("");}} className="field" placeholder="What happened? Include dates, deadlines, what they said..." style={{minHeight:110}}/>
+          {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
+          <button onClick={go} disabled={!situation.trim()&&!doc.trim()} className="action-btn" style={{padding:"16px 0",fontSize:15,background:"linear-gradient(135deg,#991b1b,#dc2626)"}}>⚔️ Analyze My Case</button>
+          <div style={{fontSize:11,color:"#2a2a2a",textAlign:"center"}}>🔒 Your information is never stored or shared.</div>
+        </div>
+      </div>)}
+    </div>
+  );
+};
+
+// ── CONTRACT TOOL ─────────────────────────────────────────────────────────
+const ContractTool=({checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
+  const TYPES=[
+    {id:"personal_loan",icon:"💵",label:"Personal Loan Agreement",sub:"Lending money to a friend or family member"},
+    {id:"roommate",icon:"🏠",label:"Roommate Agreement",sub:"Shared housing rules and responsibilities"},
+    {id:"freelance",icon:"💻",label:"Freelance / Service Agreement",sub:"Getting paid for work you're doing"},
+    {id:"handshake",icon:"🤝",label:"Simple Deal Agreement",sub:"Any informal deal between two people"},
+    {id:"payment_plan",icon:"📅",label:"Payment Plan Agreement",sub:"Someone owes you money — set up a plan"},
+    {id:"sale",icon:"🛍️",label:"Item Sale Agreement",sub:"Selling a car, phone, or anything valuable"},
+    {id:"nda",icon:"🔒",label:"Non-Disclosure Agreement",sub:"Keep business info confidential"},
+    {id:"other",icon:"📝",label:"Other Agreement",sub:"Describe what you need"},
+  ];
+  const [phase,setPhase]=useState("types");
+  const [type,setType]=useState(null);
+  const [party1,setParty1]=useState("");
+  const [party2,setParty2]=useState("");
+  const [state,setState]=useState("");
+  const [details,setDetails]=useState("");
+  const [result,setResult]=useState("");
+  const [err,setErr]=useState("");
+  const go=async()=>{
+    if(!details.trim()){setErr("Describe the key terms of your agreement.");return;}
+    setErr("");setPhase("loading");
+    try{
+      const text=await callAI("You are a legal document specialist. Draft clear, enforceable agreement language in plain English. Include all necessary clauses. Use ALL CAPS section headers.",`AGREEMENT TYPE: ${type?.label}\nPARTY 1: ${party1||"Party A"}\nPARTY 2: ${party2||"Party B"}\nSTATE: ${state||"Not specified"}\n\nKEY TERMS:\n${details}\n\nCreate a complete agreement with:\nAGREEMENT TITLE:\nPARTIES:\nTERMS AND CONDITIONS:\nPAYMENT TERMS (if applicable):\nDURATION:\nWHAT HAPPENS IF AGREEMENT IS BROKEN:\nSIGNATURES SECTION:\nIMPORTANT NOTES FOR BOTH PARTIES:`);
+      setResult(text);setPhase("result");onAnalysisDone();
+    }catch(e){setResult("Error: "+e.message);setPhase("result");}
+  };
+  const reset=()=>{setPhase("types");setType(null);setParty1("");setParty2("");setDetails("");setResult("");setErr("");};
+  if(phase==="loading")return <Spinner label="Drafting your agreement..."/>;
+  if(phase==="result")return <ResultPanel result={result} title={type?.label} icon={type?.icon} onNew={reset} isPro={isPro} onUpgrade={onUpgrade}/>;
+  return(
+    <div>
+      {phase==="types"&&(<div className="fade-up">
+        <div style={{marginBottom:20}}>
+          <div style={{fontSize:11,color:"#06b6d4",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>Contract Builder</div>
+          <div style={{fontSize:22,fontWeight:800,lineHeight:1.2}}>What kind of agreement?</div>
+          <div style={{fontSize:13,color:"#555",marginTop:6}}>AI drafts a real, signable agreement in seconds.</div>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {TYPES.map(t=>(
+            <button key={t.id} onClick={()=>{setType(t);setPhase("input");}} className="topic-card">
+              <span style={{fontSize:22,flexShrink:0}}>{t.icon}</span>
+              <div style={{flex:1}}>
+                <div style={{fontSize:14,fontWeight:700,color:"#f0f0f0",marginBottom:2}}>{t.label}</div>
+                <div style={{fontSize:12,color:"#555"}}>{t.sub}</div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>)}
+      {phase==="input"&&(<div className="fade-up">
+        <button onClick={()=>setPhase("types")} style={{background:"none",border:"none",color:"#555",fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:18}}>← Back</button>
+        <div style={{marginBottom:18}}>
+          <div style={{fontSize:11,color:"#06b6d4",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>{type?.icon} {type?.label}</div>
+          <div style={{fontSize:20,fontWeight:800}}>Fill in the details.</div>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            <input value={party1} onChange={e=>setParty1(e.target.value)} placeholder="Your full name" className="field"/>
+            <input value={party2} onChange={e=>setParty2(e.target.value)} placeholder="Other party's name" className="field"/>
+          </div>
+          <select value={state} onChange={e=>setState(e.target.value)} className="field"><option value="">State (for legal validity)</option>{US_STATES.map(s=><option key={s}>{s}</option>)}</select>
+          <textarea value={details} onChange={e=>{setDetails(e.target.value);setErr("");}} className="field" placeholder="Key terms: amounts, dates, what each person must do, what happens if broken..." style={{minHeight:130}}/>
+          {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
+          <button onClick={go} disabled={!details.trim()} className="action-btn" style={{padding:"16px 0",fontSize:15,background:"linear-gradient(135deg,#0e7490,#1d4ed8)"}}>🤝 Draft My Agreement</button>
+          <div style={{fontSize:11,color:"#444",textAlign:"center",lineHeight:1.6}}>💡 For amounts over $1,000, consider having signatures notarized.</div>
+        </div>
+      </div>)}
+    </div>
+  );
+};
+
+// ── GENERIC TOOL ──────────────────────────────────────────────────────────
+const GenericTool=({toolId,checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
+  const tool=TOOLS.find(t=>t.id===toolId);
+  const [situation,setSituation]=useState("");
+  const [state,setState]=useState("");
+  const [extra,setExtra]=useState("");
+  const [result,setResult]=useState("");
+  const [loading,setLoading]=useState(false);
+  const [err,setErr]=useState("");
+  const configs={
+    support:{system:"You are a child support advisor. Be empathetic and direct. Plain text only, ALL CAPS headers.",extra:"Current order ($)",ph:"Which side (paying or receiving)? What's your situation? Include dates and amounts..."},
+    expunge:{system:"You are a criminal record expungement expert. Plain text only, ALL CAPS headers.",extra:"Charge & year",ph:"What state? What was the charge and outcome? Why do you need it cleared?"},
+    wage:{system:"You are a wage theft and employment law expert. Plain text only, ALL CAPS headers.",extra:"Amount owed ($)",ph:"Who is your employer? What type of wage theft? How long has this been going on?"},
+    loan:{system:"You are a predatory lending expert. Plain text only, ALL CAPS headers.",extra:"Loan type & rate",ph:"Paste loan terms or describe what they told you, including all fees..."},
+    docs:{system:"You are an expert document analyzer. Plain text only, ALL CAPS headers.",extra:"Context about this doc",ph:"Paste the full text of your document, letter, notice, or contract here..."},
+    mortgage:{system:"You are a mortgage and home loan expert. Cite RESPA, TILA, ECOA. Plain text only, ALL CAPS headers.",extra:"Loan amount & rate",ph:"Describe your home loan situation. Paste any confusing terms or notices..."},
+    smallclaims:{system:"You are a small claims court expert. Plain text only, ALL CAPS headers.",extra:"Amount disputed ($)",ph:"What happened? Who owes who what? Are you suing or being sued? What evidence do you have?"},
+    insurance:{system:"You are an insurance dispute expert. Plain text only, ALL CAPS headers.",extra:"Insurance type",ph:"What was denied? When? What reason did they give? How much money is at stake?"},
+    consumer:{system:"You are a consumer rights expert citing FTC Act, FCRA, state laws. Plain text only, ALL CAPS headers.",extra:"Amount involved ($)",ph:"What did you buy? What went wrong? What have they said when you complained?"},
+    idtheft:{system:"You are an identity theft recovery expert. Be urgent and specific. Plain text only, ALL CAPS headers.",extra:"How you found out",ph:"What happened? Accounts opened in your name? Tax fraud? How did you discover it?"},
+  };
+  const config=configs[toolId]||configs.docs;
+  const go=async()=>{
+    if(!situation.trim()){setErr("Please describe your situation.");return;}
+    setErr("");setLoading(true);
+    try{
+      const text=await callAI(config.system,`STATE: ${state||"Not specified"}\nEXTRA INFO: ${extra||"None"}\n\nSITUATION:\n${situation}\n\nProvide detailed guidance with ALL CAPS section headers.`);
+      setResult(text);onAnalysisDone();
+    }catch(e){setResult("Error: "+e.message);}
+    setLoading(false);
+  };
+  const reset=()=>{setResult("");setSituation("");setState("");setExtra("");setErr("");};
+  if(loading)return <Spinner label={`Analyzing your situation...`}/>;
+  if(result)return <ResultPanel result={result} title={tool?.label} icon={tool?.icon} onNew={reset} isPro={isPro} onUpgrade={onUpgrade}/>;
+  return(
+    <div className="fade-up">
+      <div style={{marginBottom:20}}>
+        <div style={{fontSize:11,color:tool?.color,fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>{tool?.icon} {tool?.label}</div>
+        <div style={{fontSize:22,fontWeight:800}}>Describe your situation.</div>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+          <select value={state} onChange={e=>setState(e.target.value)} className="field"><option value="">Your state</option>{US_STATES.map(s=><option key={s}>{s}</option>)}</select>
+          <input value={extra} onChange={e=>setExtra(e.target.value)} placeholder={config.extra} className="field"/>
+        </div>
+        <textarea value={situation} onChange={e=>{setSituation(e.target.value);setErr("");}} className="field" placeholder={config.ph} style={{minHeight:130}}/>
+        {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
+        <button onClick={go} disabled={!situation.trim()} className="action-btn" style={{padding:"16px 0",fontSize:15}}>{tool?.icon} Analyze My Situation</button>
+        <div style={{fontSize:11,color:"#2a2a2a",textAlign:"center"}}>🔒 Your information is never stored or shared.</div>
+      </div>
+    </div>
+  );
+};
+
+// ── DISCLAIMER ────────────────────────────────────────────────────────────
+const DisclaimerGate=({onAccept})=>{
+  const [checked,setChecked]=useState(false);
+  return(
+    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.96)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:20,backdropFilter:"blur(16px)"}}>
+      <div style={{maxWidth:440,width:"100%",background:"#18181f",border:"1px solid rgba(109,40,217,.3)",borderRadius:24,padding:32}} className="fade-up">
+        <div style={{fontSize:36,marginBottom:14,textAlign:"center"}}>⚖️</div>
+        <div style={{fontFamily:"'Fraunces',Georgia,serif",fontSize:26,fontWeight:900,marginBottom:6,textAlign:"center",color:"#fff",lineHeight:1.2}}>Welcome to Justify</div>
+        <div style={{fontSize:13,color:"#555",textAlign:"center",marginBottom:24,lineHeight:1.6}}>AI-powered legal information for everyday people.</div>
+        <div style={{background:"rgba(109,40,217,.06)",border:"1px solid rgba(109,40,217,.15)",borderRadius:14,padding:18,marginBottom:24}}>
+          {[
+            ["📋","Provides legal information only — not legal advice"],
+            ["🤖","AI-generated. May not reflect your specific jurisdiction"],
+            ["⚠️","Not a substitute for a licensed attorney"],
+            ["🔒","Your info is never stored, sold, or shared"],
+          ].map(([e,t])=>(
+            <div key={t} style={{fontSize:12,color:"#777",marginBottom:8,display:"flex",gap:8,alignItems:"flex-start"}}>
+              <span style={{flexShrink:0}}>{e}</span><span>{t}</span>
             </div>
           ))}
         </div>
-      </div>
-    );
-  };
-
-  const Home=({onSelect})=>(
-    <div className="fade-up">
-      <div style={{textAlign:"center",marginBottom:52}}>
-        <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(124,58,237,.08)",border:"1px solid rgba(124,58,237,.2)",borderRadius:100,padding:"6px 20px",fontSize:11,color:"#a78bfa",fontWeight:700,letterSpacing:1.2,marginBottom:28}}>⚡ 6 TOOLS · ALL FREE TO TRY</div>
-        <h1 style={{fontSize:46,fontWeight:900,letterSpacing:-2,lineHeight:1.05,marginBottom:20}}>Know your rights.<br/><span style={{background:"linear-gradient(135deg,#a78bfa,#60a5fa,#34d399)",backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"gradMove 3s linear infinite"}}>Fight back.</span></h1>
-        <p style={{fontSize:16,color:"#444",lineHeight:1.8,maxWidth:440,margin:"0 auto 16px"}}>AI-powered legal defense for everyday people. Tickets, child support, wage theft, evictions, record expungement — we cover it all.</p>
-        <div style={{fontSize:12,color:"#222"}}>No lawyers needed · No account required · 50 states covered</div>
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:36}}>
-        {TOOLS.map((t,i)=>(
-          <button key={t.id} onClick={()=>onSelect(t.id)} className="tool-btn" style={{background:"rgba(255,255,255,.02)",border:"1px solid rgba(255,255,255,.06)",padding:22,textAlign:"left",animationDelay:`${i*60}ms`}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
-              <div style={{fontSize:30}}>{t.icon}</div>
-              <span className={`badge ${t.badge}`}>{t.badgeLabel}</span>
-            </div>
-            <div style={{fontSize:15,fontWeight:800,color:"#f0f0f0",marginBottom:4}}>{t.label}</div>
-            <div style={{fontSize:11,color:"#444",lineHeight:1.5}}>{t.sub}</div>
-            <div style={{marginTop:14,display:"flex",alignItems:"center",gap:6,fontSize:12,fontWeight:700,background:`${t.color}18`,border:`1px solid ${t.color}33`,borderRadius:100,padding:"5px 12px",width:"fit-content",color:t.color}}>Get Started →</div>
-          </button>
-        ))}
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:32}}>
-        {[{n:"6",l:"Legal tools"},{n:"50",l:"States covered"},{n:"Free",l:"To try"}].map(s=>(
-          <div key={s.n} className="glass" style={{padding:"18px 14px",textAlign:"center"}}>
-            <div style={{fontSize:24,fontWeight:900,background:"linear-gradient(135deg,#a78bfa,#60a5fa)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",marginBottom:4}}>{s.n}</div>
-            <div style={{fontSize:11,color:"#333"}}>{s.l}</div>
+        <div onClick={()=>setChecked(!checked)} style={{display:"flex",alignItems:"center",gap:14,marginBottom:24,cursor:"pointer",padding:"14px 16px",borderRadius:12,background:checked?"rgba(109,40,217,.08)":"rgba(255,255,255,.02)",border:`1px solid ${checked?"rgba(109,40,217,.4)":"rgba(255,255,255,.06)"}`,transition:"all .2s"}}>
+          <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${checked?"#6d28d9":"#333"}`,background:checked?"#6d28d9":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all .2s"}}>
+            {checked&&<div style={{color:"#fff",fontSize:13,fontWeight:900}}>✓</div>}
           </div>
-        ))}
+          <div style={{fontSize:13,color:checked?"#c4b5fd":"#555",lineHeight:1.5}}>I understand Justify provides legal information, not legal advice.</div>
+        </div>
+        <button onClick={()=>checked&&onAccept()} disabled={!checked} className="action-btn" style={{width:"100%",padding:"16px 0",fontSize:15,opacity:checked?1:.4}}>Enter Justify →</button>
       </div>
-      <div style={{background:"rgba(255,255,255,.02)",border:"1px solid rgba(255,255,255,.04)",borderRadius:12,padding:16,fontSize:11,color:"#2a2a2a",lineHeight:1.7,textAlign:"center"}}>⚠ Justify provides general legal information, not legal advice. For complex matters, consult a licensed attorney in your state.</div>
     </div>
   );
+};
 
-  const DisclaimerGate=({onAccept})=>{
-    const [checked,setChecked]=useState(false);
-    return(
-      <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.95)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:20,backdropFilter:"blur(16px)"}}>
-        <div className="glass fade-up" style={{maxWidth:460,width:"100%",padding:36,borderColor:"rgba(124,58,237,.3)"}}>
-          <div style={{fontSize:36,marginBottom:16,textAlign:"center"}}>⚖️</div>
-          <div style={{fontSize:24,fontWeight:900,letterSpacing:-.5,marginBottom:8,textAlign:"center"}}>Welcome to Justify</div>
-          <div style={{background:"rgba(124,58,237,.06)",border:"1px solid rgba(124,58,237,.15)",borderRadius:14,padding:20,marginBottom:24}}>
-            <div style={{fontSize:13,color:"#888",lineHeight:1.9}}>
-              <div style={{marginBottom:10}}>📋 Justify provides <strong style={{color:"#a78bfa"}}>legal information only</strong> — not legal advice.</div>
-              <div style={{marginBottom:10}}>🤖 All content is AI-generated and may not reflect your specific jurisdiction.</div>
-              <div style={{marginBottom:10}}>⚠️ Do not rely on Justify as a substitute for a licensed attorney.</div>
-              <div>🔒 Your information is never stored, sold, or shared.</div>
-            </div>
-          </div>
-          <div onClick={()=>setChecked(!checked)} style={{display:"flex",alignItems:"flex-start",gap:14,marginBottom:24,cursor:"pointer",padding:"14px 16px",borderRadius:12,background:checked?"rgba(124,58,237,.08)":"rgba(255,255,255,.02)",border:`1px solid ${checked?"rgba(124,58,237,.4)":"rgba(255,255,255,.06)"}`,transition:"all .2s"}}>
-            <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${checked?"#7c3aed":"#333"}`,background:checked?"#7c3aed":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,transition:"all .2s"}}>
-              {checked&&<div style={{color:"#fff",fontSize:14,fontWeight:900}}>✓</div>}
-            </div>
-            <div style={{fontSize:13,color:checked?"#c4b5fd":"#666",lineHeight:1.6,fontStyle:"italic"}}>"I understand Justify is an AI informational tool, not legal counsel, and I will consult a licensed attorney for serious legal matters."</div>
-          </div>
-          <button onClick={()=>checked&&onAccept()} disabled={!checked} className="action-btn" style={{width:"100%",padding:"16px 0",fontSize:15,opacity:checked?1:.4}}>I Understand — Enter Justify →</button>
-        </div>
+// ── HOME ──────────────────────────────────────────────────────────────────
+const Home=({onSelect})=>(
+  <div className="fade-up">
+    {/* Hero */}
+    <div style={{textAlign:"center",marginBottom:48,paddingTop:8}}>
+      <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(109,40,217,.1)",border:"1px solid rgba(109,40,217,.2)",borderRadius:100,padding:"6px 18px",fontSize:11,color:"#a78bfa",fontWeight:700,letterSpacing:1,marginBottom:20}}>
+        ⚡ 12 FREE LEGAL TOOLS
       </div>
-    );
-  };
+      <h1 style={{fontFamily:"'Fraunces',Georgia,serif",fontSize:44,fontWeight:900,letterSpacing:-1.5,lineHeight:1.05,marginBottom:14,color:"#fff"}}>
+        Know your rights.<br/>
+        <span style={{background:"linear-gradient(135deg,#a78bfa 0%,#60a5fa 50%,#34d399 100%)",backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"gradMove 3s linear infinite"}}>Fight back.</span>
+      </h1>
+      <p style={{fontSize:15,color:"#555",lineHeight:1.8,maxWidth:400,margin:"0 auto 20px"}}>
+        AI-powered legal defense for everyday people. Debt collectors, evictions, wage theft, contracts — real answers, no lawyer fees.
+      </p>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:16,flexWrap:"wrap"}}>
+        <div style={{display:"flex",alignItems:"center",gap:6,fontSize:12,color:"#555"}}>
+          <span style={{color:"#f59e0b"}}>★★★★★</span> 4.9 rating
+        </div>
+        <div style={{width:1,height:14,background:"rgba(255,255,255,.08)"}}/>
+        <div style={{fontSize:12,color:"#555"}}>🔒 Never stores your data</div>
+        <div style={{width:1,height:14,background:"rgba(255,255,255,.08)"}}/>
+        <div style={{fontSize:12,color:"#555"}}>⚡ Free to try</div>
+      </div>
+    </div>
 
-  const App=()=>{
-    const [screen,setScreen]=useState("home");
-    const [tool,setTool]=useState(null);
-    const [cases,setCases]=useState(loadCases);
-    const [freeUsed,setFreeUsed]=useState(loadFree);
-    const [isPro,setIsPro]=useState(()=>{try{return localStorage.getItem("jsfy_pro")==="1"}catch{return false}});
-    const [showPaywall,setShowPaywall]=useState(false);
-    const [toast,setToast]=useState("");
-    const [disclaimerAccepted,setDisclaimerAccepted]=useState(()=>{try{return localStorage.getItem("jsfy_disc")==="1"}catch{return false}});
-
-    useEffect(()=>saveCases(cases),[cases]);
-
-    const showToast=msg=>{setToast(msg);setTimeout(()=>setToast(""),2500)};
-    const acceptDisclaimer=()=>{try{localStorage.setItem("jsfy_disc","1")}catch{}setDisclaimerAccepted(true);};
-    const checkAccess=()=>true;
-    const onAnalysisDone=()=>{
-      if(!isPro){const n=bumpFree();setFreeUsed(n);if(n>=3)setTimeout(()=>setShowPaywall(true),3000);}
-    };
-    const saveCase=c=>{setCases(p=>[c,...p]);showToast("✓ Case saved to tracker");};
-    const updateCase=(id,u)=>setCases(p=>p.map(c=>c.id===id?{...c,...u}:c));
-    const deleteCase=id=>setCases(p=>p.filter(c=>c.id!==id));
-    const selectTool=id=>{setTool(id);setScreen("tool");window.scrollTo({top:0,behavior:"smooth"});};
-
-    const NAV_ITEMS=[
-      {id:"home",label:"🏠 Home"},
-      {id:"tool",label:tool?`${TOOLS.find(t=>t.id===tool)?.icon} ${TOOLS.find(t=>t.id===tool)?.label}`:"Tool",hidden:!tool},
-      {id:"tracker",label:`📁 Cases${cases.length?` (${cases.length})`:""}`},
-    ].filter(n=>!n.hidden);
-
-    const toolProps={checkAccess,onAnalysisDone,onSaveCase:saveCase,isPro,onUpgrade:()=>setShowPaywall(true)};
-
-    return(
-      <div style={{minHeight:"100vh",background:"#04050a",position:"relative"}}>
-        <Bg/>
-        {!disclaimerAccepted&&<DisclaimerGate onAccept={acceptDisclaimer}/>}
-        <nav style={{position:"sticky",top:0,zIndex:300,background:"rgba(4,5,10,.93)",backdropFilter:"blur(28px)",borderBottom:"1px solid rgba(255,255,255,.04)",padding:"12px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
-          <button onClick={()=>setScreen("home")} style={{display:"flex",alignItems:"center",gap:10,background:"none",border:"none",cursor:"pointer",padding:0,fontFamily:"inherit"}}>
-            <div style={{width:34,height:34,borderRadius:10,background:"linear-gradient(135deg,#7c3aed,#2563eb)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:900,color:"#fff",boxShadow:"0 0 20px rgba(124,58,237,.35)",animation:"glowPulse 2.5s infinite"}}>J</div>
-            <div style={{textAlign:"left"}}>
-              <div style={{fontSize:15,fontWeight:900,letterSpacing:-.5,color:"#f0f0f0"}}>Justify</div>
-              <div style={{fontSize:9,color:"#3730a3",letterSpacing:1.5,fontWeight:700}}>AI LEGAL DEFENSE</div>
+    {/* Testimonials */}
+    <div style={{marginBottom:36}}>
+      <div style={{fontSize:11,color:"#555",fontWeight:700,letterSpacing:1.5,marginBottom:14,textTransform:"uppercase",textAlign:"center"}}>Real people, real results</div>
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        {TESTIMONIALS.map((t,i)=>(
+          <div key={i} style={{background:"#18181f",border:"1px solid rgba(255,255,255,.06)",borderRadius:16,padding:"16px 18px",display:"flex",gap:14,alignItems:"flex-start"}}>
+            <div style={{width:46,height:46,borderRadius:"50%",background:t.bg,border:`2px solid ${t.color}44`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:15,fontWeight:800,color:t.color,letterSpacing:.5}}>{t.initials}</div>
+            <div style={{flex:1}}>
+              <div style={{color:"#f59e0b",fontSize:12,marginBottom:4}}>★★★★★</div>
+              <div style={{fontSize:13,color:"#bbb",lineHeight:1.6,marginBottom:8}}>"{t.text}"</div>
+              <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#888"}}>{t.name}</div>
+                <div style={{fontSize:10,color:"#333"}}>·</div>
+                <div style={{fontSize:11,color:"#444"}}>{t.location}</div>
+                <span style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:100,background:`${t.color}18`,border:`1px solid ${t.color}33`,color:t.color}}>{t.tool}</span>
+              </div>
             </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Tools */}
+    <div style={{marginBottom:10}}>
+      <div style={{fontSize:11,color:"#666",fontWeight:700,letterSpacing:1.5,marginBottom:12,textTransform:"uppercase"}}>⚔️ Defense Tools</div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>
+        {TOOLS.slice(0,6).map(t=>(
+          <button key={t.id} onClick={()=>onSelect(t.id)} className="tool-card">
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
+              <div style={{fontSize:24}}>{t.icon}</div>
+              <span style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:100,background:`${t.color}18`,border:`1px solid ${t.color}33`,color:t.color}}>{t.tag}</span>
+            </div>
+            <div style={{fontSize:13,fontWeight:800,color:"#f0f0f0",marginBottom:3}}>{t.label}</div>
+            <div style={{fontSize:10,color:"#444",lineHeight:1.5,marginBottom:10}}>{t.sub}</div>
+            <div style={{fontSize:11,fontWeight:700,color:t.color}}>Start free →</div>
           </button>
-          <div style={{display:"flex",gap:4,overflowX:"auto"}}>
-            {NAV_ITEMS.map(n=>(
-              <button key={n.id} onClick={()=>{if(n.id==="tracker"){setScreen("tracker");}else if(n.id==="home"){setScreen("home");}else{setScreen("tool");}}} className={`nav-pill ${screen===n.id?"active":"inactive"}`}>{n.label}</button>
-            ))}
-          </div>
-          <div style={{display:"flex",gap:6,flexShrink:0}}>
-            {!isPro&&<button onClick={()=>setShowPaywall(true)} style={{background:"rgba(124,58,237,.1)",border:"1px solid rgba(124,58,237,.25)",borderRadius:8,color:"#a78bfa",fontSize:11,fontWeight:700,padding:"7px 10px",cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap"}}>🔓 Pro</button>}
-            {isPro&&<div style={{background:"rgba(52,211,153,.08)",border:"1px solid rgba(52,211,153,.2)",borderRadius:8,color:"#34d399",fontSize:11,fontWeight:700,padding:"7px 10px"}}>✓ PRO</div>}
-          </div>
-        </nav>
-        {!isPro&&freeUsed<3&&<div style={{background:"rgba(124,58,237,.06)",borderBottom:"1px solid rgba(124,58,237,.1)",padding:"9px 24px",textAlign:"center",fontSize:12,color:"#a78bfa",fontWeight:600}}>⚡ <strong>{3-freeUsed} free {3-freeUsed===1?"analysis":"analyses"}</strong> remaining — no account needed</div>}
-        {!isPro&&freeUsed>=3&&<div onClick={()=>setShowPaywall(true)} style={{background:"rgba(124,58,237,.08)",borderBottom:"1px solid rgba(124,58,237,.15)",padding:"9px 24px",textAlign:"center",fontSize:12,color:"#a78bfa",fontWeight:700,cursor:"pointer"}}>🔒 Upgrade to unlock unlimited access + PDF downloads — $9.99/mo</div>}
-        <div style={{maxWidth:640,margin:"0 auto",padding:"32px 20px 80px",position:"relative",zIndex:1}}>
-          {screen==="home"&&<Home onSelect={selectTool}/>}
-          {screen==="tool"&&tool==="fight"&&<FightTool {...toolProps}/>}
-          {screen==="tool"&&tool==="support"&&<SupportTool {...toolProps}/>}
-          {screen==="tool"&&tool==="expunge"&&<ExpungeTool {...toolProps}/>}
-          {screen==="tool"&&tool==="wage"&&<WageTool {...toolProps}/>}
-          {screen==="tool"&&tool==="loan"&&<LoanTool {...toolProps}/>}
-          {screen==="tool"&&tool==="docs"&&<DocsTool {...toolProps}/>}
-          {screen==="tracker"&&<Tracker cases={cases} onUpdate={updateCase} onDelete={deleteCase}/>}
-        </div>
-        {showPaywall&&<Paywall onClose={()=>setShowPaywall(false)}/>}
-        {toast&&<div style={{position:"fixed",bottom:24,right:24,background:"#111",border:"1px solid rgba(124,58,237,.3)",borderRadius:12,padding:"14px 20px",fontSize:13,fontWeight:600,color:"#a78bfa",zIndex:9999,animation:"fadeUp .3s ease"}}>{toast}</div>}
+        ))}
       </div>
-    );
+      <div style={{fontSize:11,color:"#666",fontWeight:700,letterSpacing:1.5,marginBottom:12,textTransform:"uppercase"}}>✨ New Tools</div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:28}}>
+        {TOOLS.slice(6).map(t=>(
+          <button key={t.id} onClick={()=>onSelect(t.id)} className="tool-card">
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
+              <div style={{fontSize:24}}>{t.icon}</div>
+              <span style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:100,background:`${t.color}18`,border:`1px solid ${t.color}33`,color:t.color}}>{t.tag}</span>
+            </div>
+            <div style={{fontSize:13,fontWeight:800,color:"#f0f0f0",marginBottom:3}}>{t.label}</div>
+            <div style={{fontSize:10,color:"#444",lineHeight:1.5,marginBottom:10}}>{t.sub}</div>
+            <div style={{fontSize:11,fontWeight:700,color:t.color}}>Start free →</div>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {/* Trust bar */}
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:24}}>
+      {[{n:"12",l:"Legal tools"},{n:"50",l:"States covered"},{n:"4.9★",l:"User rating"}].map(s=>(
+        <div key={s.n} style={{background:"#18181f",border:"1px solid rgba(255,255,255,.06)",borderRadius:14,padding:"14px 10px",textAlign:"center"}}>
+          <div style={{fontSize:20,fontWeight:900,background:"linear-gradient(135deg,#a78bfa,#60a5fa)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",marginBottom:4}}>{s.n}</div>
+          <div style={{fontSize:10,color:"#444"}}>{s.l}</div>
+        </div>
+      ))}
+    </div>
+
+    {/* As seen in / trust logos (text-based) */}
+    <div style={{background:"#18181f",border:"1px solid rgba(255,255,255,.05)",borderRadius:14,padding:"16px 20px",marginBottom:20,textAlign:"center"}}>
+      <div style={{fontSize:10,color:"#333",fontWeight:700,letterSpacing:1.5,marginBottom:12,textTransform:"uppercase"}}>Trusted by people fighting back in all 50 states</div>
+      <div style={{display:"flex",justifyContent:"center",gap:20,flexWrap:"wrap"}}>
+        {["Debt Collectors","Evictions","Wage Theft","Bad Loans","Court Summons","Employers"].map(t=>(
+          <div key={t} style={{fontSize:11,color:"#444",padding:"4px 10px",borderRadius:100,background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.05)"}}>{t}</div>
+        ))}
+      </div>
+    </div>
+
+    <div style={{fontSize:11,color:"#222",lineHeight:1.7,textAlign:"center",padding:"0 10px"}}>⚠ Justify provides general legal information, not legal advice. Consult a licensed attorney in your state for complex matters.</div>
+  </div>
+);
+
+// ── MAIN APP ──────────────────────────────────────────────────────────────
+const App=()=>{
+  const [screen,setScreen]=useState("home");
+  const [tool,setTool]=useState(null);
+  const [freeUsed,setFreeUsed]=useState(loadFree);
+  const [isPro,setIsPro]=useState(loadPro);
+  const [showPaywall,setShowPaywall]=useState(false);
+  const [disclaimerAccepted,setDisclaimerAccepted]=useState(()=>{try{return localStorage.getItem("jsfy_disc")==="1"}catch{return false}});
+
+  const acceptDisclaimer=()=>{try{localStorage.setItem("jsfy_disc","1")}catch{}setDisclaimerAccepted(true);};
+  const checkAccess=()=>true;
+  const onAnalysisDone=()=>{if(!isPro){const n=bumpFree();setFreeUsed(n);if(n>=3)setTimeout(()=>setShowPaywall(true),3000);}};
+  const selectTool=id=>{setTool(id);setScreen("tool");window.scrollTo({top:0,behavior:"smooth"});};
+  const currentTool=TOOLS.find(t=>t.id===tool);
+  const toolProps={checkAccess,onAnalysisDone,isPro,onUpgrade:()=>setShowPaywall(true)};
+
+  const renderTool=()=>{
+    if(tool==="fight")return <FightTool {...toolProps}/>;
+    if(tool==="contract")return <ContractTool {...toolProps}/>;
+    return <GenericTool toolId={tool} {...toolProps}/>;
   };
 
-  ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+  return(
+    <div style={{minHeight:"100vh",background:"#0f0f13",position:"relative"}}>
+      {!disclaimerAccepted&&<DisclaimerGate onAccept={acceptDisclaimer}/>}
+
+      {/* Top nav */}
+      <nav style={{position:"sticky",top:0,zIndex:300,background:"rgba(15,15,19,.96)",backdropFilter:"blur(24px)",borderBottom:"1px solid rgba(255,255,255,.05)",padding:"12px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+        <button onClick={()=>setScreen("home")} style={{display:"flex",alignItems:"center",gap:10,background:"none",border:"none",cursor:"pointer",padding:0,fontFamily:"inherit"}}>
+          <div style={{width:34,height:34,borderRadius:10,background:"linear-gradient(135deg,#6d28d9,#1d4ed8)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,fontWeight:900,color:"#fff",boxShadow:"0 0 16px rgba(109,40,217,.4)"}}>J</div>
+          <div>
+            <div style={{fontFamily:"'Fraunces',Georgia,serif",fontSize:16,fontWeight:900,color:"#f0f0f0",letterSpacing:-.3}}>Justify</div>
+            <div style={{fontSize:9,color:"#4c1d95",letterSpacing:1.5,fontWeight:700,textTransform:"uppercase"}}>AI Legal Defense</div>
+          </div>
+        </button>
+        <div style={{display:"flex",gap:4,overflowX:"auto"}}>
+          <button onClick={()=>setScreen("home")} className={`nav-pill ${screen==="home"?"active":"inactive"}`}>Home</button>
+          {tool&&<button onClick={()=>setScreen("tool")} className={`nav-pill ${screen==="tool"?"active":"inactive"}`}>{currentTool?.icon} {currentTool?.label}</button>}
+        </div>
+        <button onClick={()=>setShowPaywall(true)} style={{background:"linear-gradient(135deg,#6d28d9,#1d4ed8)",border:"none",borderRadius:8,color:"#fff",fontSize:11,fontWeight:700,padding:"8px 14px",cursor:"pointer",fontFamily:"inherit",whiteSpace:"nowrap",flexShrink:0}}>
+          {isPro?"✓ Pro":"Upgrade"}
+        </button>
+      </nav>
+
+      {/* Banner */}
+      {!isPro&&freeUsed<3&&(
+        <div style={{background:"rgba(109,40,217,.07)",borderBottom:"1px solid rgba(109,40,217,.12)",padding:"8px 24px",textAlign:"center",fontSize:12,color:"#a78bfa",fontWeight:600}}>
+          ⚡ <strong>{3-freeUsed} free {3-freeUsed===1?"analysis":"analyses"}</strong> remaining — no account needed
+        </div>
+      )}
+      {!isPro&&freeUsed>=3&&(
+        <div onClick={()=>setShowPaywall(true)} style={{background:"rgba(109,40,217,.08)",borderBottom:"1px solid rgba(109,40,217,.15)",padding:"8px 24px",textAlign:"center",fontSize:12,color:"#a78bfa",fontWeight:700,cursor:"pointer"}}>
+          🔒 Upgrade for unlimited access — $9.99/mo
+        </div>
+      )}
+
+      <div style={{maxWidth:640,margin:"0 auto",padding:"28px 18px 80px",position:"relative",zIndex:1}}>
+        {screen==="home"&&<Home onSelect={selectTool}/>}
+        {screen==="tool"&&tool&&renderTool()}
+      </div>
+
+      {showPaywall&&<Paywall onClose={()=>setShowPaywall(false)}/>}
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
 </body>
 </html>
