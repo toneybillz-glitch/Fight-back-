@@ -112,6 +112,51 @@ const TESTIMONIALS=[
 const loadFree=()=>{try{return parseInt(localStorage.getItem("jsfy_free")||"0")}catch{return 0}};
 const bumpFree=()=>{try{const n=loadFree()+1;localStorage.setItem("jsfy_free",n);return n}catch{return 1}};
 const loadPro=()=>{try{return localStorage.getItem("jsfy_pro")==="1"}catch{return false}};
+const loadCaptured=()=>{try{return localStorage.getItem("jsfy_captured")==="1"}catch{return false}};
+const saveCaptured=()=>{try{localStorage.setItem("jsfy_captured","1")}catch{}};
+const saveLead=async(name,email)=>{
+  try{
+    const leads=JSON.parse(localStorage.getItem("jsfy_leads")||"[]");
+    leads.push({name,email,date:new Date().toISOString()});
+    localStorage.setItem("jsfy_leads",JSON.stringify(leads));
+    await fetch("https://formsubmit.co/ajax/mudbonerobinson@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({name,email,source:"Justify App",_subject:"New Justify Lead!"})}).catch(()=>{});
+  }catch(e){}
+  saveCaptured();
+};
+
+const EmailGate=({onComplete})=>{
+  const [name,setName]=useState("");
+  const [email,setEmail]=useState("");
+  const [loading,setLoading]=useState(false);
+  const valid=name.trim().length>1&&email.includes("@")&&email.includes(".");
+  const submit=async()=>{
+    if(!valid)return;
+    setLoading(true);
+    await saveLead(name.trim(),email.trim());
+    setLoading(false);
+    onComplete();
+  };
+  return(
+    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.88)",zIndex:500,display:"flex",alignItems:"center",justifyContent:"center",padding:20,backdropFilter:"blur(16px)"}}>
+      <div style={{maxWidth:400,width:"100%",background:"#18181f",border:"1px solid rgba(109,40,217,.3)",borderRadius:24,padding:32}} className="fade-up">
+        <div style={{textAlign:"center",marginBottom:24}}>
+          <div style={{width:56,height:56,borderRadius:"50%",background:"linear-gradient(135deg,#6d28d9,#1d4ed8)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,margin:"0 auto 14px"}}>⚡</div>
+          <div style={{fontFamily:"Fraunces,Georgia,serif",fontSize:22,fontWeight:900,color:"#fff",marginBottom:6}}>Your analysis is ready!</div>
+          <div style={{fontSize:13,color:"#555",lineHeight:1.6}}>Enter your name and email to unlock your free legal guidance.</div>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
+          <input value={name} onChange={e=>setName(e.target.value)} placeholder="First name" className="field" style={{padding:"14px 18px"}}/>
+          <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email address" type="email" className="field" style={{padding:"14px 18px"}}/>
+          <button onClick={submit} disabled={!valid||loading} className="action-btn" style={{padding:"16px 0",fontSize:15,opacity:valid&&!loading?1:.4}}>
+            {loading?"One sec...":"Get My Free Results →"}
+          </button>
+        </div>
+        <div style={{fontSize:11,color:"#333",textAlign:"center",lineHeight:1.6}}>🔒 No spam ever. Unsubscribe anytime.</div>
+      </div>
+    </div>
+  );
+};
+
 
 const callAI=async(system,userContent)=>{
   const res=await fetch("/api/analyze",{
@@ -208,7 +253,7 @@ const Paywall=({onClose})=>(
 );
 
 // ── FIGHT TOOL ────────────────────────────────────────────────────────────
-const FightTool=({checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
+const FightTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
   const TOPICS=[
     {id:"ticket",icon:"🚨",label:"Traffic Ticket",urgency:"med",sub:"Fight your ticket, know your rights"},
     {id:"debt",icon:"📞",label:"Debt Collector",urgency:"high",sub:"Stop the calls — know what they can't do"},
@@ -232,11 +277,14 @@ const FightTool=({checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
     setErr("");setPhase("loading");
     try{
       const text=await callAI("You are an aggressive legal defense advisor for everyday people. Be direct, specific, cite actual laws. Give word-for-word scripts. Plain text only, use ALL CAPS section headers with colons.",`CASE: ${topic?.label}\nSTATE: ${state||"Not specified"}\n${doc?`DOCUMENT:\n${doc}\n\n`:""}SITUATION:\n${situation}\n\nProvide:\nWHAT THIS IS:\nYOUR RIGHTS:\nIMMEDIATE ACTIONS:\nEXACT SCRIPT — WHAT TO SAY:\nWHAT NOT TO DO:\nREALISTIC OUTCOME:\nFREE RESOURCES:`);
-      setResult(text);setPhase("result");onAnalysisDone();
+      if(!captured){setResult(text);setPhase("gate");} else {setResult(text);setPhase("result");onAnalysisDone();}
     }catch(e){setResult("Error: "+e.message);setPhase("result");}
   };
   const reset=()=>{setPhase("topics");setTopic(null);setSituation("");setDoc("");setResult("");setErr("");};
   if(phase==="loading")return <Spinner/>;
+  if(phase==="gate")return(
+    <EmailGate onComplete={()=>{setPhase("result");onAnalysisDone();}}/>
+  );
   if(phase==="result")return <ResultPanel result={result} title={topic?.label} icon={topic?.icon} onNew={reset} isPro={isPro} onUpgrade={onUpgrade}/>;
   return(
     <div>
@@ -278,7 +326,7 @@ const FightTool=({checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
 };
 
 // ── CONTRACT TOOL ─────────────────────────────────────────────────────────
-const ContractTool=({checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
+const ContractTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
   const TYPES=[
     {id:"personal_loan",icon:"💵",label:"Personal Loan Agreement",sub:"Lending money to a friend or family member"},
     {id:"roommate",icon:"🏠",label:"Roommate Agreement",sub:"Shared housing rules and responsibilities"},
@@ -302,11 +350,14 @@ const ContractTool=({checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
     setErr("");setPhase("loading");
     try{
       const text=await callAI("You are a legal document specialist. Draft clear, enforceable agreement language in plain English. Include all necessary clauses. Use ALL CAPS section headers.",`AGREEMENT TYPE: ${type?.label}\nPARTY 1: ${party1||"Party A"}\nPARTY 2: ${party2||"Party B"}\nSTATE: ${state||"Not specified"}\n\nKEY TERMS:\n${details}\n\nCreate a complete agreement with:\nAGREEMENT TITLE:\nPARTIES:\nTERMS AND CONDITIONS:\nPAYMENT TERMS (if applicable):\nDURATION:\nWHAT HAPPENS IF AGREEMENT IS BROKEN:\nSIGNATURES SECTION:\nIMPORTANT NOTES FOR BOTH PARTIES:`);
-      setResult(text);setPhase("result");onAnalysisDone();
+      if(!captured){setResult(text);setPhase("gate");} else {setResult(text);setPhase("result");onAnalysisDone();}
     }catch(e){setResult("Error: "+e.message);setPhase("result");}
   };
   const reset=()=>{setPhase("types");setType(null);setParty1("");setParty2("");setDetails("");setResult("");setErr("");};
   if(phase==="loading")return <Spinner label="Drafting your agreement..."/>;
+  if(phase==="gate")return(
+    <EmailGate onComplete={()=>{setPhase("result");onAnalysisDone();}}/>
+  );
   if(phase==="result")return <ResultPanel result={result} title={type?.label} icon={type?.icon} onNew={reset} isPro={isPro} onUpgrade={onUpgrade}/>;
   return(
     <div>
@@ -351,13 +402,14 @@ const ContractTool=({checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
 };
 
 // ── GENERIC TOOL ──────────────────────────────────────────────────────────
-const GenericTool=({toolId,checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
+const GenericTool=({toolId,checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
   const tool=TOOLS.find(t=>t.id===toolId);
   const [situation,setSituation]=useState("");
   const [state,setState]=useState("");
   const [extra,setExtra]=useState("");
   const [result,setResult]=useState("");
   const [loading,setLoading]=useState(false);
+  const [showGate,setShowGate]=useState(false);
   const [err,setErr]=useState("");
   const configs={
     support:{system:"You are a child support advisor. Be empathetic and direct. Plain text only, ALL CAPS headers.",extra:"Current order ($)",ph:"Which side (paying or receiving)? What's your situation? Include dates and amounts..."},
@@ -377,12 +429,13 @@ const GenericTool=({toolId,checkAccess,onAnalysisDone,isPro,onUpgrade})=>{
     setErr("");setLoading(true);
     try{
       const text=await callAI(config.system,`STATE: ${state||"Not specified"}\nEXTRA INFO: ${extra||"None"}\n\nSITUATION:\n${situation}\n\nProvide detailed guidance with ALL CAPS section headers.`);
-      setResult(text);onAnalysisDone();
+      if(!captured){setResult(text);setShowGate(true);} else {setResult(text);onAnalysisDone();}
     }catch(e){setResult("Error: "+e.message);}
     setLoading(false);
   };
   const reset=()=>{setResult("");setSituation("");setState("");setExtra("");setErr("");};
   if(loading)return <Spinner label={`Analyzing your situation...`}/>;
+  if(showGate)return <EmailGate onComplete={()=>{setShowGate(false);onAnalysisDone();}}/>;
   if(result)return <ResultPanel result={result} title={tool?.label} icon={tool?.icon} onNew={reset} isPro={isPro} onUpgrade={onUpgrade}/>;
   return(
     <div className="fade-up">
@@ -548,14 +601,30 @@ const App=()=>{
   const [freeUsed,setFreeUsed]=useState(loadFree);
   const [isPro,setIsPro]=useState(loadPro);
   const [showPaywall,setShowPaywall]=useState(false);
+  const [showEmailGate,setShowEmailGate]=useState(false);
+  const [pendingResult,setPendingResult]=useState(null);
+  const [captured,setCaptured]=useState(loadCaptured);
   const [disclaimerAccepted,setDisclaimerAccepted]=useState(()=>{try{return localStorage.getItem("jsfy_disc")==="1"}catch{return false}});
 
   const acceptDisclaimer=()=>{try{localStorage.setItem("jsfy_disc","1")}catch{}setDisclaimerAccepted(true);};
   const checkAccess=()=>true;
   const onAnalysisDone=()=>{if(!isPro){const n=bumpFree();setFreeUsed(n);if(n>=3)setTimeout(()=>setShowPaywall(true),3000);}};
+  const onResultReady=(result,showFn)=>{
+    if(!captured){
+      setPendingResult({result,showFn});
+      setShowEmailGate(true);
+    } else {
+      showFn(result);
+    }
+  };
+  const onEmailCaptured=()=>{
+    setCaptured(true);
+    setShowEmailGate(false);
+    if(pendingResult){pendingResult.showFn(pendingResult.result);setPendingResult(null);}
+  };
   const selectTool=id=>{setTool(id);setScreen("tool");window.scrollTo({top:0,behavior:"smooth"});};
   const currentTool=TOOLS.find(t=>t.id===tool);
-  const toolProps={checkAccess,onAnalysisDone,isPro,onUpgrade:()=>setShowPaywall(true)};
+  const toolProps={checkAccess,onAnalysisDone,isPro,onUpgrade:()=>setShowPaywall(true),captured};
 
   const renderTool=()=>{
     if(tool==="fight")return <FightTool {...toolProps}/>;
@@ -603,6 +672,7 @@ const App=()=>{
       </div>
 
       {showPaywall&&<Paywall onClose={()=>setShowPaywall(false)}/>}
+      {showEmailGate&&<EmailGate onComplete={onEmailCaptured}/>}
     </div>
   );
 };
