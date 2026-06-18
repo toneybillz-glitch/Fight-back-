@@ -42,6 +42,9 @@
     .field:focus{border-color:rgba(109,40,217,.6);background:rgba(109,40,217,.06);box-shadow:0 0 0 3px rgba(109,40,217,.1)}
     .field option{background:#1e1e2a}
     textarea.field{resize:vertical;min-height:120px}
+    .label{font-size:12px;font-weight:700;color:#888;margin-bottom:7px;display:block;letter-spacing:.2px}
+    .label .opt{color:#3a3a3a;font-weight:600}
+    .field-group{display:flex;flex-direction:column}
     .topic-card{padding:16px;border-radius:14px;cursor:pointer;border:1.5px solid rgba(255,255,255,.06);background:#18181f;transition:all .2s;text-align:left;font-family:inherit;width:100%;display:flex;align-items:center;gap:14px}
     .topic-card:hover{border-color:rgba(109,40,217,.4);background:rgba(109,40,217,.06);transform:translateX(3px)}
     .nav-pill{padding:7px 16px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:all .2s;font-family:inherit;white-space:nowrap}
@@ -50,6 +53,8 @@
     .nav-pill.inactive:hover{color:#888}
     .tool-card{background:#18181f;border:1.5px solid rgba(255,255,255,.06);border-radius:16px;padding:20px;text-align:left;cursor:pointer;font-family:inherit;transition:all .25s;width:100%}
     .tool-card:hover{transform:translateY(-3px);border-color:rgba(109,40,217,.35);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+    .seg{flex:1;padding:13px 8px;border-radius:11px;cursor:pointer;border:1.5px solid rgba(255,255,255,.07);background:#18181f;transition:all .18s;text-align:center;font-family:inherit}
+    .seg.on{border-color:rgba(234,179,8,.55);background:rgba(234,179,8,.1)}
     .star{color:#f59e0b;font-size:13px}
     .avatar{width:40px;height:40px;border-radius:50%;border:2px solid rgba(255,255,255,.1);object-fit:cover;flex-shrink:0}
   </style>
@@ -65,6 +70,7 @@ const US_STATES=["Alabama","Alaska","Arizona","Arkansas","California","Colorado"
 
 const TOOLS=[
   {id:"fight",icon:"⚔️",label:"Legal Defense",sub:"Tickets · Debt · Eviction · Court",color:"#ef4444",tag:"Most Used"},
+  {id:"talent",icon:"🎬",label:"Creator & Talent Contracts",sub:"Brand deals · Music · Acting — spot the traps",color:"#eab308",tag:"New"},
   {id:"support",icon:"⚖️",label:"Child Support",sub:"Payer · Receiver · Modification",color:"#3b82f6",tag:"Family"},
   {id:"expunge",icon:"📜",label:"Record Expungement",sub:"Clear old charges · Fresh start",color:"#10b981",tag:"Clear Record"},
   {id:"wage",icon:"💸",label:"Wage Theft Fighter",sub:"Unpaid wages · Overtime · Tips",color:"#f59e0b",tag:"Get Paid"},
@@ -89,6 +95,15 @@ const TESTIMONIALS=[
     color:"#60a5fa"
   },
   {
+    text:"A brand offered me $250 for a video that would've let them own it forever. Justify flagged it and wrote my counter. I got $1,400 and kept my rights.",
+    name:"Jaylen B.",
+    location:"Los Angeles, CA",
+    tool:"Talent Contracts",
+    initials:"JB",
+    bg:"#3a3417",
+    color:"#eab308"
+  },
+  {
     text:"My landlord tried to evict me with 3 days notice. Justify told me exactly what my rights were. I'm still in my apartment.",
     name:"Destiny R.",
     location:"Houston, TX",
@@ -105,15 +120,6 @@ const TESTIMONIALS=[
     initials:"CM",
     bg:"#1f3d2e",
     color:"#4ade80"
-  },
-  {
-    text:"I needed a simple loan agreement for money I lent a friend. Justify drafted it in 2 minutes. Professional and clear.",
-    name:"Keisha W.",
-    location:"Chicago, IL",
-    tool:"Contract Builder",
-    initials:"KW",
-    bg:"#3d2a1a",
-    color:"#fb923c"
   },
 ];
 
@@ -265,7 +271,7 @@ const ResultPanel=({result,title,icon,onNew,isPro,captured,onEmailCaptured})=>{
       {isUnlocked&&!isPro&&(
         <div style={{background:"linear-gradient(135deg,rgba(109,40,217,.12),rgba(29,78,216,.08))",border:"1px solid rgba(109,40,217,.3)",borderRadius:18,padding:24,marginBottom:14,textAlign:"center"}}>
           <div style={{fontSize:15,fontWeight:800,marginBottom:6,color:"#fff"}}>💎 Want unlimited + PDF downloads?</div>
-          <div style={{fontSize:12,color:"#555",marginBottom:14,lineHeight:1.6}}>Upgrade to Pro for all 12 tools, PDF exports, and case tracking.</div>
+          <div style={{fontSize:12,color:"#555",marginBottom:14,lineHeight:1.6}}>Upgrade to Pro for all 13 tools, PDF exports, and case tracking.</div>
           <button onClick={()=>window.open(STRIPE_LINK,"_blank")} className="action-btn" style={{width:"100%",padding:"13px 0",fontSize:14,marginBottom:6}}>Unlock Justify Pro — $9.99/mo →</button>
           <div style={{fontSize:10,color:"#333"}}>Cancel anytime</div>
         </div>
@@ -292,7 +298,7 @@ const Paywall=({onClose})=>(
       <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{fontSize:32,marginBottom:8}}>⚖️</div>
         <div style={{fontSize:22,fontWeight:900,color:"#fff",marginBottom:4}}>You've used your free analyses</div>
-        <div style={{fontSize:13,color:"#555",lineHeight:1.6}}>Upgrade to keep fighting back — unlimited access to all 12 tools.</div>
+        <div style={{fontSize:13,color:"#555",lineHeight:1.6}}>Upgrade to keep fighting back — unlimited access to all 13 tools.</div>
       </div>
       <div style={{background:"rgba(109,40,217,.08)",border:"1px solid rgba(109,40,217,.2)",borderRadius:14,padding:20,marginBottom:20}}>
         <div style={{display:"flex",alignItems:"baseline",gap:6,marginBottom:12}}>
@@ -300,7 +306,7 @@ const Paywall=({onClose})=>(
           <div style={{fontSize:13,color:"#444"}}>/month</div>
           <div style={{fontSize:11,color:"#333",textDecoration:"line-through",marginLeft:4}}>$49.99</div>
         </div>
-        {["✓ Unlimited analyses — all 12 tools","✓ Contract & agreement generator","✓ Mortgage loan analyzer","✓ PDF download for every result","✓ Case tracker with AI check-ins","✓ Cancel anytime"].map(f=>(
+        {["✓ Unlimited analyses — all 13 tools","✓ Creator & talent contract analyzer","✓ Contract & agreement generator","✓ PDF download for every result","✓ Case tracker with AI check-ins","✓ Cancel anytime"].map(f=>(
           <div key={f} style={{fontSize:12,color:"#888",marginBottom:5,display:"flex",alignItems:"center",gap:6}}>{f}</div>
         ))}
       </div>
@@ -326,23 +332,24 @@ const FightTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
   const [phase,setPhase]=useState("topics");
   const [topic,setTopic]=useState(null);
   const [state,setState]=useState("");
+  const [deadline,setDeadline]=useState("");
+  const [whoInvolved,setWhoInvolved]=useState("");
   const [doc,setDoc]=useState("");
   const [situation,setSituation]=useState("");
+  const [tried,setTried]=useState("");
+  const [goal,setGoal]=useState("");
   const [result,setResult]=useState("");
   const [err,setErr]=useState("");
   const go=async()=>{
-    if(!situation.trim()&&!doc.trim()){setErr("Please describe your situation.");return;}
+    if(!situation.trim()&&!doc.trim()){setErr("Tell us a little about what happened so we can actually help.");return;}
     setErr("");setPhase("loading");
     try{
-      const text=await callAI("You are an aggressive legal defense advisor for everyday people. Be direct, specific, cite actual laws. Give word-for-word scripts. Plain text only, use ALL CAPS section headers with colons.",`CASE: ${topic?.label}\nSTATE: ${state||"Not specified"}\n${doc?`DOCUMENT:\n${doc}\n\n`:""}SITUATION:\n${situation}\n\nProvide:\nWHAT THIS IS:\nYOUR RIGHTS:\nIMMEDIATE ACTIONS:\nEXACT SCRIPT — WHAT TO SAY:\nWHAT NOT TO DO:\nREALISTIC OUTCOME:\nFREE RESOURCES:`);
+      const text=await callAI("You are an aggressive but caring legal defense advisor for everyday people who feel powerless. Open with one short, human line that acknowledges what they're going through, then get to work. Be direct, specific, cite actual laws. Give word-for-word scripts. Plain text only, use ALL CAPS section headers with colons.",`CASE: ${topic?.label}\nSTATE: ${state||"Not specified"}\nDEADLINE / TIME PRESSURE: ${deadline||"Not specified"}\nWHO IS INVOLVED: ${whoInvolved||"Not specified"}\nWHAT THEY'VE ALREADY TRIED: ${tried||"Nothing yet"}\nWHAT THEY WANT TO HAPPEN: ${goal||"Not specified"}\n${doc?`DOCUMENT THEY RECEIVED:\n${doc}\n\n`:""}WHAT HAPPENED:\n${situation}\n\nProvide:\nWHERE YOU STAND:\nYOUR RIGHTS:\nIMMEDIATE ACTIONS:\nEXACT SCRIPT — WHAT TO SAY:\nWHAT NOT TO DO:\nREALISTIC OUTCOME:\nFREE RESOURCES:`);
       setResult(text);setPhase("result");onAnalysisDone();
     }catch(e){setResult("Error: "+e.message);setPhase("result");}
   };
-  const reset=()=>{setPhase("topics");setTopic(null);setSituation("");setDoc("");setResult("");setErr("");};
+  const reset=()=>{setPhase("topics");setTopic(null);setSituation("");setDoc("");setDeadline("");setWhoInvolved("");setTried("");setGoal("");setResult("");setErr("");};
   if(phase==="loading")return <Spinner/>;
-  if(phase==="gate")return(
-    <EmailGate onComplete={()=>{setPhase("result");onAnalysisDone();}}/>
-  );
   if(phase==="result")return <ResultPanel result={result} title={topic?.label} icon={topic?.icon} onNew={reset} isPro={isPro} onUpgrade={onUpgrade} captured={captured} onEmailCaptured={()=>onAnalysisDone()}/>;
   return(
     <div>
@@ -366,17 +373,143 @@ const FightTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
       </div>)}
       {phase==="input"&&(<div className="fade-up">
         <button onClick={()=>setPhase("topics")} style={{background:"none",border:"none",color:"#555",fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:18,display:"flex",alignItems:"center",gap:4}}>← Back</button>
-        <div style={{marginBottom:18}}>
+        <div style={{marginBottom:6}}>
           <div style={{fontSize:11,color:"#ef4444",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>{topic?.icon} {topic?.label}</div>
-          <div style={{fontSize:20,fontWeight:800}}>Tell us what happened.</div>
+          <div style={{fontSize:20,fontWeight:800}}>Walk us through it.</div>
         </div>
-        <div style={{display:"flex",flexDirection:"column",gap:12}}>
-          <select value={state} onChange={e=>setState(e.target.value)} className="field"><option value="">Your state (recommended)</option>{US_STATES.map(s=><option key={s}>{s}</option>)}</select>
-          <textarea value={doc} onChange={e=>setDoc(e.target.value)} className="field" placeholder="Paste any letter, notice, or document text here (optional)..." style={{minHeight:80}}/>
-          <textarea value={situation} onChange={e=>{setSituation(e.target.value);setErr("");}} className="field" placeholder="What happened? Include dates, deadlines, what they said..." style={{minHeight:110}}/>
+        <div style={{fontSize:12.5,color:"#555",lineHeight:1.6,marginBottom:18}}>The more you tell us, the sharper your plan. Take your time — only the first box is required.</div>
+        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+          <div className="field-group">
+            <label className="label">What happened? <span className="opt">· required</span></label>
+            <textarea value={situation} onChange={e=>{setSituation(e.target.value);setErr("");}} className="field" placeholder="Tell the story in your own words — dates, what was said, how it started..." style={{minHeight:120}}/>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            <div className="field-group">
+              <label className="label">Your state <span className="opt">· recommended</span></label>
+              <select value={state} onChange={e=>setState(e.target.value)} className="field"><option value="">Select state</option>{US_STATES.map(s=><option key={s}>{s}</option>)}</select>
+            </div>
+            <div className="field-group">
+              <label className="label">Deadline / court date <span className="opt">· optional</span></label>
+              <input value={deadline} onChange={e=>setDeadline(e.target.value)} placeholder="e.g. 7 days, May 3" className="field"/>
+            </div>
+          </div>
+          <div className="field-group">
+            <label className="label">Who's on the other side? <span className="opt">· optional</span></label>
+            <input value={whoInvolved} onChange={e=>setWhoInvolved(e.target.value)} placeholder="Landlord, collection agency, employer name..." className="field"/>
+          </div>
+          <div className="field-group">
+            <label className="label">Paste any letter or notice you got <span className="opt">· optional</span></label>
+            <textarea value={doc} onChange={e=>setDoc(e.target.value)} className="field" placeholder="Copy the text of the document here and AI will read every line..." style={{minHeight:80}}/>
+          </div>
+          <div className="field-group">
+            <label className="label">What have you already tried? <span className="opt">· optional</span></label>
+            <input value={tried} onChange={e=>setTried(e.target.value)} placeholder="Called them, ignored it, sent a letter..." className="field"/>
+          </div>
+          <div className="field-group">
+            <label className="label">What do you want to happen? <span className="opt">· optional</span></label>
+            <input value={goal} onChange={e=>setGoal(e.target.value)} placeholder="Stop the calls, stay in my home, get more time..." className="field"/>
+          </div>
           {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
-          <button onClick={go} disabled={!situation.trim()&&!doc.trim()} className="action-btn" style={{padding:"16px 0",fontSize:15,background:"linear-gradient(135deg,#991b1b,#dc2626)"}}>⚔️ Analyze My Case</button>
+          <button onClick={go} disabled={!situation.trim()&&!doc.trim()} className="action-btn" style={{padding:"16px 0",fontSize:15,background:"linear-gradient(135deg,#991b1b,#dc2626)"}}>⚔️ Build My Defense Plan</button>
           <div style={{fontSize:11,color:"#2a2a2a",textAlign:"center"}}>🔒 Your information is never stored or shared.</div>
+        </div>
+      </div>)}
+    </div>
+  );
+};
+
+// ── TALENT CONTRACT TOOL ──────────────────────────────────────────────────
+const TalentTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
+  const LANES=[
+    {id:"creator",icon:"📱",label:"Creator",sub:"Brand deals, sponsorships, UGC, agency"},
+    {id:"musician",icon:"🎵",label:"Musician",sub:"Record, distro, publishing, producer splits"},
+    {id:"actor",icon:"🎭",label:"Actor / Talent",sub:"Booking, management, appearance, image rights"},
+  ];
+  const DEAL_TYPES={
+    creator:["Brand / sponsorship deal","Agency or management","UGC / content license","Affiliate / ambassador","Other"],
+    musician:["Record / label deal","Distribution / DSP","Publishing / sync","Producer / beat agreement","Management","Other"],
+    actor:["Booking / role contract","Management / agency","Appearance / event","Image & likeness","Other"],
+  };
+  const [phase,setPhase]=useState("lane");
+  const [lane,setLane]=useState(null);
+  const [dealType,setDealType]=useState("");
+  const [signed,setSigned]=useState("");
+  const [followers,setFollowers]=useState("");
+  const [offer,setOffer]=useState("");
+  const [contract,setContract]=useState("");
+  const [concern,setConcern]=useState("");
+  const [result,setResult]=useState("");
+  const [err,setErr]=useState("");
+  const go=async()=>{
+    if(!contract.trim()&&!offer.trim()){setErr("Paste the contract or describe the offer so we can break it down for you.");return;}
+    setErr("");setPhase("loading");
+    try{
+      const text=await callAI("You are a sharp entertainment & creator-economy contract advisor who genuinely looks out for talent who get exploited. Open with one short, human line acknowledging their situation, then break it down without legal jargon. Flag every clause that takes rights, money, or freedom away. Be specific about market rates. Give an exact, copy-paste counter-offer they can send. Plain text only, ALL CAPS section headers with colons.",
+      `LANE: ${lane?.label}\nDEAL TYPE: ${dealType||"Not specified"}\nALREADY SIGNED?: ${signed||"Not specified"}\nAUDIENCE / FOLLOWING: ${followers||"Not specified"}\nOFFER ON THE TABLE: ${offer||"Not specified"}\nWHAT THEY'RE WORRIED ABOUT: ${concern||"Not specified"}\n${contract?`CONTRACT TEXT:\n${contract}\n\n`:""}Provide:\nTHE BOTTOM LINE:\nRED FLAGS — CLAUSES THAT HURT YOU:\nRIGHTS & OWNERSHIP — WHAT YOU'RE GIVING UP:\nIS THE MONEY FAIR?:\nWHAT TO PUSH BACK ON:\nEXACT COUNTER-OFFER — COPY & SEND THIS:\n${signed&&signed.startsWith("Yes")?"ALREADY SIGNED? HERE'S WHAT YOU CAN STILL DO:":"BEFORE YOU SIGN:"}\nREALISTIC OUTCOME:`);
+      setResult(text);setPhase("result");onAnalysisDone();
+    }catch(e){setResult("Error: "+e.message);setPhase("result");}
+  };
+  const reset=()=>{setPhase("lane");setLane(null);setDealType("");setSigned("");setFollowers("");setOffer("");setContract("");setConcern("");setResult("");setErr("");};
+  if(phase==="loading")return <Spinner label="Reading your contract line by line..."/>;
+  if(phase==="result")return <ResultPanel result={result} title={`${lane?.label} Contract`} icon={lane?.icon} onNew={reset} isPro={isPro} onUpgrade={onUpgrade} captured={captured} onEmailCaptured={()=>onAnalysisDone()}/>;
+  return(
+    <div>
+      {phase==="lane"&&(<div className="fade-up">
+        <div style={{marginBottom:8}}>
+          <div style={{fontSize:11,color:"#eab308",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>Creator & Talent Contracts</div>
+          <div style={{fontSize:22,fontWeight:800,lineHeight:1.2}}>Don't sign away your career.</div>
+          <div style={{fontSize:13,color:"#555",marginTop:6,lineHeight:1.6}}>Paste any deal and AI flags the traps, checks if the money's fair, and writes your counter. First, which best describes you?</div>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:16}}>
+          {LANES.map(l=>(
+            <button key={l.id} onClick={()=>{setLane(l);setPhase("input");}} className="topic-card">
+              <span style={{fontSize:24,flexShrink:0}}>{l.icon}</span>
+              <div style={{flex:1}}>
+                <div style={{fontSize:14,fontWeight:700,color:"#f0f0f0",marginBottom:2}}>{l.label}</div>
+                <div style={{fontSize:12,color:"#555"}}>{l.sub}</div>
+              </div>
+              <span style={{fontSize:18,color:"#333"}}>→</span>
+            </button>
+          ))}
+        </div>
+      </div>)}
+      {phase==="input"&&(<div className="fade-up">
+        <button onClick={()=>setPhase("lane")} style={{background:"none",border:"none",color:"#555",fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:18,display:"flex",alignItems:"center",gap:4}}>← Back</button>
+        <div style={{marginBottom:6}}>
+          <div style={{fontSize:11,color:"#eab308",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>{lane?.icon} {lane?.label} Contract Check</div>
+          <div style={{fontSize:20,fontWeight:800}}>Let's break this deal down.</div>
+        </div>
+        <div style={{fontSize:12.5,color:"#555",lineHeight:1.6,marginBottom:18}}>Give us what you've got — even a screenshot's worth of text helps. Only the contract or offer is required.</div>
+        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+          <div className="field-group">
+            <label className="label">Paste the contract <span className="opt">· required (or fill the offer below)</span></label>
+            <textarea value={contract} onChange={e=>{setContract(e.target.value);setErr("");}} className="field" placeholder="Paste the full contract, email, or DM with the terms here. AI reads every clause..." style={{minHeight:130}}/>
+          </div>
+          <div className="field-group">
+            <label className="label">What kind of deal is it? <span className="opt">· optional</span></label>
+            <select value={dealType} onChange={e=>setDealType(e.target.value)} className="field"><option value="">Select deal type</option>{(DEAL_TYPES[lane?.id]||[]).map(d=><option key={d}>{d}</option>)}</select>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            <div className="field-group">
+              <label className="label">Have you signed yet? <span className="opt">· optional</span></label>
+              <select value={signed} onChange={e=>setSigned(e.target.value)} className="field"><option value="">Select</option><option>No — still deciding</option><option>Yes — already signed</option></select>
+            </div>
+            <div className="field-group">
+              <label className="label">{lane?.id==="musician"?"Monthly listeners":lane?.id==="actor"?"Your experience":"Your following"} <span className="opt">· optional</span></label>
+              <input value={followers} onChange={e=>setFollowers(e.target.value)} placeholder={lane?.id==="actor"?"e.g. 3 indie films":"e.g. 45k TikTok"} className="field"/>
+            </div>
+          </div>
+          <div className="field-group">
+            <label className="label">What are they offering you? <span className="opt">· optional</span></label>
+            <input value={offer} onChange={e=>{setOffer(e.target.value);setErr("");}} placeholder="$ amount, free product, exposure, % split..." className="field"/>
+          </div>
+          <div className="field-group">
+            <label className="label">What's making you uneasy? <span className="opt">· optional</span></label>
+            <textarea value={concern} onChange={e=>setConcern(e.target.value)} className="field" placeholder="Something feels off but you can't name it? Tell us. 'They want my content forever,' 'the pay feels low,' 'I don't get the exclusivity part'..." style={{minHeight:80}}/>
+          </div>
+          {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
+          <button onClick={go} disabled={!contract.trim()&&!offer.trim()} className="action-btn" style={{padding:"16px 0",fontSize:15,background:"linear-gradient(135deg,#a16207,#eab308)"}}>🎬 Check My Contract</button>
+          <div style={{fontSize:11,color:"#444",textAlign:"center",lineHeight:1.6}}>🔒 Your contract is never stored or shared. This is information, not legal representation.</div>
         </div>
       </div>)}
     </div>
@@ -400,22 +533,21 @@ const ContractTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
   const [party1,setParty1]=useState("");
   const [party2,setParty2]=useState("");
   const [state,setState]=useState("");
+  const [amount,setAmount]=useState("");
+  const [timeline,setTimeline]=useState("");
   const [details,setDetails]=useState("");
   const [result,setResult]=useState("");
   const [err,setErr]=useState("");
   const go=async()=>{
-    if(!details.trim()){setErr("Describe the key terms of your agreement.");return;}
+    if(!details.trim()){setErr("Describe the key terms so we can draft something that protects you.");return;}
     setErr("");setPhase("loading");
     try{
-      const text=await callAI("You are a legal document specialist. Draft clear, enforceable agreement language in plain English. Include all necessary clauses. Use ALL CAPS section headers.",`AGREEMENT TYPE: ${type?.label}\nPARTY 1: ${party1||"Party A"}\nPARTY 2: ${party2||"Party B"}\nSTATE: ${state||"Not specified"}\n\nKEY TERMS:\n${details}\n\nCreate a complete agreement with:\nAGREEMENT TITLE:\nPARTIES:\nTERMS AND CONDITIONS:\nPAYMENT TERMS (if applicable):\nDURATION:\nWHAT HAPPENS IF AGREEMENT IS BROKEN:\nSIGNATURES SECTION:\nIMPORTANT NOTES FOR BOTH PARTIES:`);
+      const text=await callAI("You are a legal document specialist. Draft clear, enforceable agreement language in plain English. Include all necessary clauses. Use ALL CAPS section headers.",`AGREEMENT TYPE: ${type?.label}\nPARTY 1: ${party1||"Party A"}\nPARTY 2: ${party2||"Party B"}\nSTATE: ${state||"Not specified"}\nAMOUNT / VALUE: ${amount||"Not specified"}\nTIMELINE / DUE DATES: ${timeline||"Not specified"}\n\nKEY TERMS:\n${details}\n\nCreate a complete agreement with:\nAGREEMENT TITLE:\nPARTIES:\nTERMS AND CONDITIONS:\nPAYMENT TERMS (if applicable):\nDURATION:\nWHAT HAPPENS IF AGREEMENT IS BROKEN:\nSIGNATURES SECTION:\nIMPORTANT NOTES FOR BOTH PARTIES:`);
       setResult(text);setPhase("result");onAnalysisDone();
     }catch(e){setResult("Error: "+e.message);setPhase("result");}
   };
-  const reset=()=>{setPhase("types");setType(null);setParty1("");setParty2("");setDetails("");setResult("");setErr("");};
+  const reset=()=>{setPhase("types");setType(null);setParty1("");setParty2("");setAmount("");setTimeline("");setDetails("");setResult("");setErr("");};
   if(phase==="loading")return <Spinner label="Drafting your agreement..."/>;
-  if(phase==="gate")return(
-    <EmailGate onComplete={()=>{setPhase("result");onAnalysisDone();}}/>
-  );
   if(phase==="result")return <ResultPanel result={result} title={type?.label} icon={type?.icon} onNew={reset} isPro={isPro} onUpgrade={onUpgrade} captured={captured} onEmailCaptured={()=>onAnalysisDone()}/>;
   return(
     <div>
@@ -439,17 +571,40 @@ const ContractTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
       </div>)}
       {phase==="input"&&(<div className="fade-up">
         <button onClick={()=>setPhase("types")} style={{background:"none",border:"none",color:"#555",fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:18}}>← Back</button>
-        <div style={{marginBottom:18}}>
+        <div style={{marginBottom:6}}>
           <div style={{fontSize:11,color:"#06b6d4",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>{type?.icon} {type?.label}</div>
           <div style={{fontSize:20,fontWeight:800}}>Fill in the details.</div>
         </div>
-        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        <div style={{fontSize:12.5,color:"#555",lineHeight:1.6,marginBottom:18}}>The more specific you are, the stronger your agreement. Only the terms box is required.</div>
+        <div style={{display:"flex",flexDirection:"column",gap:14}}>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-            <input value={party1} onChange={e=>setParty1(e.target.value)} placeholder="Your full name" className="field"/>
-            <input value={party2} onChange={e=>setParty2(e.target.value)} placeholder="Other party's name" className="field"/>
+            <div className="field-group">
+              <label className="label">Your name <span className="opt">· optional</span></label>
+              <input value={party1} onChange={e=>setParty1(e.target.value)} placeholder="Your full name" className="field"/>
+            </div>
+            <div className="field-group">
+              <label className="label">Other party <span className="opt">· optional</span></label>
+              <input value={party2} onChange={e=>setParty2(e.target.value)} placeholder="Their full name" className="field"/>
+            </div>
           </div>
-          <select value={state} onChange={e=>setState(e.target.value)} className="field"><option value="">State (for legal validity)</option>{US_STATES.map(s=><option key={s}>{s}</option>)}</select>
-          <textarea value={details} onChange={e=>{setDetails(e.target.value);setErr("");}} className="field" placeholder="Key terms: amounts, dates, what each person must do, what happens if broken..." style={{minHeight:130}}/>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            <div className="field-group">
+              <label className="label">Amount / value <span className="opt">· optional</span></label>
+              <input value={amount} onChange={e=>setAmount(e.target.value)} placeholder="$ involved" className="field"/>
+            </div>
+            <div className="field-group">
+              <label className="label">Timeline <span className="opt">· optional</span></label>
+              <input value={timeline} onChange={e=>setTimeline(e.target.value)} placeholder="Due dates, length" className="field"/>
+            </div>
+          </div>
+          <div className="field-group">
+            <label className="label">State <span className="opt">· for legal validity</span></label>
+            <select value={state} onChange={e=>setState(e.target.value)} className="field"><option value="">Select state</option>{US_STATES.map(s=><option key={s}>{s}</option>)}</select>
+          </div>
+          <div className="field-group">
+            <label className="label">The key terms <span className="opt">· required</span></label>
+            <textarea value={details} onChange={e=>{setDetails(e.target.value);setErr("");}} className="field" placeholder="What does each person agree to do? Amounts, dates, conditions, what happens if someone backs out..." style={{minHeight:120}}/>
+          </div>
           {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
           <button onClick={go} disabled={!details.trim()} className="action-btn" style={{padding:"16px 0",fontSize:15,background:"linear-gradient(135deg,#0e7490,#1d4ed8)"}}>🤝 Draft My Agreement</button>
           <div style={{fontSize:11,color:"#444",textAlign:"center",lineHeight:1.6}}>💡 For amounts over $1,000, consider having signatures notarized.</div>
@@ -465,46 +620,68 @@ const GenericTool=({toolId,checkAccess,onAnalysisDone,isPro,onUpgrade,captured})
   const [situation,setSituation]=useState("");
   const [state,setState]=useState("");
   const [extra,setExtra]=useState("");
+  const [timeline,setTimeline]=useState("");
+  const [tried,setTried]=useState("");
   const [result,setResult]=useState("");
   const [loading,setLoading]=useState(false);
   const [err,setErr]=useState("");
   const configs={
-    support:{system:"You are a child support advisor. Be empathetic and direct. Plain text only, ALL CAPS headers.",extra:"Current order ($)",ph:"Which side (paying or receiving)? What's your situation? Include dates and amounts..."},
-    expunge:{system:"You are a criminal record expungement expert. Plain text only, ALL CAPS headers.",extra:"Charge & year",ph:"What state? What was the charge and outcome? Why do you need it cleared?"},
-    wage:{system:"You are a wage theft and employment law expert. Plain text only, ALL CAPS headers.",extra:"Amount owed ($)",ph:"Who is your employer? What type of wage theft? How long has this been going on?"},
-    loan:{system:"You are a predatory lending expert. Plain text only, ALL CAPS headers.",extra:"Loan type & rate",ph:"Paste loan terms or describe what they told you, including all fees..."},
-    docs:{system:"You are an expert document analyzer. Plain text only, ALL CAPS headers.",extra:"Context about this doc",ph:"Paste the full text of your document, letter, notice, or contract here..."},
-    mortgage:{system:"You are a mortgage and home loan expert. Cite RESPA, TILA, ECOA. Plain text only, ALL CAPS headers.",extra:"Loan amount & rate",ph:"Describe your home loan situation. Paste any confusing terms or notices..."},
-    smallclaims:{system:"You are a small claims court expert. Plain text only, ALL CAPS headers.",extra:"Amount disputed ($)",ph:"What happened? Who owes who what? Are you suing or being sued? What evidence do you have?"},
-    insurance:{system:"You are an insurance dispute expert. Plain text only, ALL CAPS headers.",extra:"Insurance type",ph:"What was denied? When? What reason did they give? How much money is at stake?"},
-    consumer:{system:"You are a consumer rights expert citing FTC Act, FCRA, state laws. Plain text only, ALL CAPS headers.",extra:"Amount involved ($)",ph:"What did you buy? What went wrong? What have they said when you complained?"},
-    idtheft:{system:"You are an identity theft recovery expert. Be urgent and specific. Plain text only, ALL CAPS headers.",extra:"How you found out",ph:"What happened? Accounts opened in your name? Tax fraud? How did you discover it?"},
+    support:{system:"You are a child support advisor. Be empathetic and direct. Plain text only, ALL CAPS headers.",extraLabel:"Current order amount",extraPh:"e.g. $600/mo",ph:"Which side are you on (paying or receiving)? What's going on? Include dates and amounts..."},
+    expunge:{system:"You are a criminal record expungement expert. Plain text only, ALL CAPS headers.",extraLabel:"Charge & year",extraPh:"e.g. Misdemeanor, 2017",ph:"What was the charge and how did the case end? Why do you need it cleared — job, housing?"},
+    wage:{system:"You are a wage theft and employment law expert. Plain text only, ALL CAPS headers.",extraLabel:"Amount owed",extraPh:"e.g. $2,400",ph:"Who's your employer? What kind of wage theft — unpaid hours, overtime, tips? How long?"},
+    loan:{system:"You are a predatory lending expert. Plain text only, ALL CAPS headers.",extraLabel:"Loan type & rate",extraPh:"e.g. Payday, 400% APR",ph:"Paste the loan terms or describe what they told you, including every fee..."},
+    docs:{system:"You are an expert document analyzer. Plain text only, ALL CAPS headers.",extraLabel:"What is this doc?",extraPh:"e.g. Collections letter",ph:"Paste the full text of your document, letter, notice, or contract here..."},
+    mortgage:{system:"You are a mortgage and home loan expert. Cite RESPA, TILA, ECOA. Plain text only, ALL CAPS headers.",extraLabel:"Loan amount & rate",extraPh:"e.g. $310k, 7.2%",ph:"Describe your home loan situation. Paste any confusing terms or notices..."},
+    smallclaims:{system:"You are a small claims court expert. Plain text only, ALL CAPS headers.",extraLabel:"Amount disputed",extraPh:"e.g. $3,500",ph:"What happened? Who owes who? Are you suing or being sued? What proof do you have?"},
+    insurance:{system:"You are an insurance dispute expert. Plain text only, ALL CAPS headers.",extraLabel:"Insurance type",extraPh:"e.g. Auto, health",ph:"What was denied? When? What reason did they give? How much is at stake?"},
+    consumer:{system:"You are a consumer rights expert citing FTC Act, FCRA, state laws. Plain text only, ALL CAPS headers.",extraLabel:"Amount involved",extraPh:"e.g. $480",ph:"What did you buy? What went wrong? What have they said when you complained?"},
+    idtheft:{system:"You are an identity theft recovery expert. Be urgent and specific. Plain text only, ALL CAPS headers.",extraLabel:"How you found out",extraPh:"e.g. Credit alert",ph:"What happened? Accounts opened in your name? Tax fraud? How did you discover it?"},
   };
   const config=configs[toolId]||configs.docs;
   const go=async()=>{
-    if(!situation.trim()){setErr("Please describe your situation.");return;}
+    if(!situation.trim()){setErr("Tell us what's going on so we can give you a real plan.");return;}
     setErr("");setLoading(true);
     try{
-      const text=await callAI(config.system,`STATE: ${state||"Not specified"}\nEXTRA INFO: ${extra||"None"}\n\nSITUATION:\n${situation}\n\nProvide detailed guidance with ALL CAPS section headers.`);
+      const text=await callAI(config.system+" Open with one short, human line that acknowledges what they're going through before the guidance.",`STATE: ${state||"Not specified"}\n${config.extraLabel.toUpperCase()}: ${extra||"None"}\nDEADLINE / TIME PRESSURE: ${timeline||"Not specified"}\nWHAT THEY'VE ALREADY TRIED: ${tried||"Nothing yet"}\n\nSITUATION:\n${situation}\n\nProvide detailed, caring guidance with ALL CAPS section headers.`);
       setResult(text);onAnalysisDone();
     }catch(e){setResult("Error: "+e.message);}
     setLoading(false);
   };
-  const reset=()=>{setResult("");setSituation("");setState("");setExtra("");setErr("");};
+  const reset=()=>{setResult("");setSituation("");setState("");setExtra("");setTimeline("");setTried("");setErr("");};
   if(loading)return <Spinner label={`Analyzing your situation...`}/>;
   if(result)return <ResultPanel result={result} title={tool?.label} icon={tool?.icon} onNew={reset} isPro={isPro} onUpgrade={onUpgrade} captured={captured} onEmailCaptured={()=>onAnalysisDone()}/>;
   return(
     <div className="fade-up">
-      <div style={{marginBottom:20}}>
+      <div style={{marginBottom:6}}>
         <div style={{fontSize:11,color:tool?.color,fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>{tool?.icon} {tool?.label}</div>
-        <div style={{fontSize:22,fontWeight:800}}>Describe your situation.</div>
+        <div style={{fontSize:22,fontWeight:800}}>Tell us what's going on.</div>
       </div>
-      <div style={{display:"flex",flexDirection:"column",gap:12}}>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-          <select value={state} onChange={e=>setState(e.target.value)} className="field"><option value="">Your state</option>{US_STATES.map(s=><option key={s}>{s}</option>)}</select>
-          <input value={extra} onChange={e=>setExtra(e.target.value)} placeholder={config.extra} className="field"/>
+      <div style={{fontSize:12.5,color:"#555",lineHeight:1.6,marginBottom:18}}>The more detail you share, the better we can help. Only the first box is required.</div>
+      <div style={{display:"flex",flexDirection:"column",gap:14}}>
+        <div className="field-group">
+          <label className="label">Your situation <span className="opt">· required</span></label>
+          <textarea value={situation} onChange={e=>{setSituation(e.target.value);setErr("");}} className="field" placeholder={config.ph} style={{minHeight:120}}/>
         </div>
-        <textarea value={situation} onChange={e=>{setSituation(e.target.value);setErr("");}} className="field" placeholder={config.ph} style={{minHeight:130}}/>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+          <div className="field-group">
+            <label className="label">Your state <span className="opt">· optional</span></label>
+            <select value={state} onChange={e=>setState(e.target.value)} className="field"><option value="">Select state</option>{US_STATES.map(s=><option key={s}>{s}</option>)}</select>
+          </div>
+          <div className="field-group">
+            <label className="label">{config.extraLabel} <span className="opt">· optional</span></label>
+            <input value={extra} onChange={e=>setExtra(e.target.value)} placeholder={config.extraPh} className="field"/>
+          </div>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+          <div className="field-group">
+            <label className="label">Any deadline? <span className="opt">· optional</span></label>
+            <input value={timeline} onChange={e=>setTimeline(e.target.value)} placeholder="e.g. 10 days" className="field"/>
+          </div>
+          <div className="field-group">
+            <label className="label">Tried anything yet? <span className="opt">· optional</span></label>
+            <input value={tried} onChange={e=>setTried(e.target.value)} placeholder="Called, emailed..." className="field"/>
+          </div>
+        </div>
         {err&&<div style={{background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:10,padding:"12px 16px",fontSize:13,color:"#f87171"}}>⚠ {err}</div>}
         <button onClick={go} disabled={!situation.trim()} className="action-btn" style={{padding:"16px 0",fontSize:15}}>{tool?.icon} Analyze My Situation</button>
         <div style={{fontSize:11,color:"#2a2a2a",textAlign:"center"}}>🔒 Your information is never stored or shared.</div>
@@ -549,6 +726,7 @@ const DisclaimerGate=({onAccept})=>{
 // ── HOME ──────────────────────────────────────────────────────────────────
 const TOOL_HOOKS={
   fight:"They called you. Here's how to shut them down.",
+  talent:"That brand deal could own your work forever. Read it first.",
   support:"They think you don't know your rights. Prove them wrong.",
   expunge:"That old charge is blocking your future. Clear it.",
   wage:"Your boss owes you money. Let's get every dollar back.",
@@ -568,14 +746,14 @@ const Home=({onSelect})=>(
     {/* Hero */}
     <div style={{textAlign:"center",marginBottom:44,paddingTop:8}}>
       <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:100,padding:"6px 18px",fontSize:11,color:"#f87171",fontWeight:700,letterSpacing:1,marginBottom:20}}>
-        ⚡ 12 FREE WEAPONS. ZERO LAWYERS NEEDED.
+        ⚡ 13 FREE WEAPONS. ZERO LAWYERS NEEDED.
       </div>
       <h1 style={{fontFamily:"'Fraunces',Georgia,serif",fontSize:40,fontWeight:900,letterSpacing:-1.5,lineHeight:1.1,marginBottom:16,color:"#fff"}}>
         The system is designed<br/>to make you give up.<br/>
         <span style={{background:"linear-gradient(135deg,#f87171 0%,#a78bfa 50%,#60a5fa 100%)",backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"gradMove 3s linear infinite"}}>Justify is designed<br/>to make you fight.</span>
       </h1>
       <p style={{fontSize:14,color:"#555",lineHeight:1.8,maxWidth:380,margin:"0 auto 20px"}}>
-        Real AI. Real answers. Real power. Debt collectors, landlords, employers, courts — they're counting on you not knowing your rights.
+        Real AI. Real answers. Real power. Debt collectors, landlords, employers, brands — they're counting on you not knowing your rights.
       </p>
       <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:14,flexWrap:"wrap",marginBottom:4}}>
         <div style={{display:"flex",alignItems:"center",gap:6,fontSize:12,color:"#555"}}>
@@ -642,7 +820,7 @@ const Home=({onSelect})=>(
 
     {/* Stats */}
     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:20}}>
-      {[{n:"12",l:"Legal weapons"},{n:"50",l:"States covered"},{n:"Free",l:"To start"}].map(s=>(
+      {[{n:"13",l:"Legal weapons"},{n:"50",l:"States covered"},{n:"Free",l:"To start"}].map(s=>(
         <div key={s.n} style={{background:"#18181f",border:"1px solid rgba(255,255,255,.06)",borderRadius:14,padding:"14px 10px",textAlign:"center"}}>
           <div style={{fontSize:20,fontWeight:900,background:"linear-gradient(135deg,#f87171,#a78bfa)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",marginBottom:4}}>{s.n}</div>
           <div style={{fontSize:10,color:"#444"}}>{s.l}</div>
@@ -655,7 +833,7 @@ const Home=({onSelect})=>(
       <div style={{fontSize:14,fontWeight:800,color:"#fff",marginBottom:6}}>Know someone getting screwed over?</div>
       <div style={{fontSize:12,color:"#555",marginBottom:14}}>Send them Justify. It's free. It fights back.</div>
       <button onClick={()=>{
-        if(navigator.share){navigator.share({title:"Justify — AI Legal Defense",text:"Free AI tool that tells you exactly what to say to debt collectors, landlords, and employers. No lawyer needed.",url:window.location.href});}
+        if(navigator.share){navigator.share({title:"Justify — AI Legal Defense",text:"Free AI tool that tells you exactly what to say to debt collectors, landlords, employers — and reads brand/talent contracts before you sign. No lawyer needed.",url:window.location.href});}
         else{navigator.clipboard?.writeText(window.location.href);alert("Link copied!");}
       }} style={{background:"linear-gradient(135deg,#6d28d9,#1d4ed8)",border:"none",borderRadius:12,color:"#fff",fontSize:13,fontWeight:700,padding:"12px 24px",cursor:"pointer",fontFamily:"inherit"}}>
         📤 Share Justify
@@ -700,6 +878,7 @@ const App=()=>{
 
   const renderTool=()=>{
     if(tool==="fight")return <FightTool {...toolProps}/>;
+    if(tool==="talent")return <TalentTool {...toolProps}/>;
     if(tool==="contract")return <ContractTool {...toolProps}/>;
     return <GenericTool toolId={tool} {...toolProps}/>;
   };
