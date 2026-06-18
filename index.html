@@ -517,6 +517,7 @@ const TalentTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
           <button onClick={go} disabled={!contract.trim()&&!offer.trim()} className="action-btn" style={{padding:"16px 0",fontSize:15,background:"linear-gradient(135deg,#a16207,#eab308)"}}>🎬 Check My Contract</button>
           <div style={{fontSize:11,color:"#444",textAlign:"center",lineHeight:1.6}}>🔒 Your contract is never stored or shared.</div>
         </div>
+
       </div>)}
     </div>
   );
@@ -775,4 +776,3 @@ const Home=({onSelect})=>(
           <button key={t.id} onClick={()=>onSelect(t.id)} className="tool-card">
             <div style={{fontSize:22,marginBottom:8}}>{t.icon}</div>
             <div style={{fontSize:12,fontWeight:800,color:"#f0f0f0",marginBottom:4}}>{t.label}</div>
-            <div style={{fontSize:10,color
