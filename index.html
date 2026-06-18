@@ -45,15 +45,15 @@
     .label{font-size:12px;font-weight:700;color:#888;margin-bottom:7px;display:block;letter-spacing:.2px}
     .label .opt{color:#3a3a3a;font-weight:600}
     .field-group{display:flex;flex-direction:column}
-    .topic-card{padding:16px;border-radius:14px;cursor:pointer;border:1.5px solid rgba(255,255,255,.06);background:#18181f;transition:all .2s;text-align:left;font-family:inherit;width:100%;display:flex;align-items:center;gap:14px}
+    .topic-card{padding:16px;border-radius:14px;cursor:pointer;border:1.5px solid rgba(255,255,255,.09);background:#1c1c26;transition:all .2s;text-align:left;font-family:inherit;width:100%;display:flex;align-items:center;gap:14px}
     .topic-card:hover{border-color:rgba(109,40,217,.4);background:rgba(109,40,217,.06);transform:translateX(3px)}
-    .nav-pill{padding:7px 16px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:all .2s;font-family:inherit;white-space:nowrap}
+    .nav-pill{padding:8px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:all .2s;font-family:inherit;white-space:nowrap}
     .nav-pill.active{background:rgba(109,40,217,.15);border-color:rgba(109,40,217,.4);color:#a78bfa}
     .nav-pill.inactive{background:transparent;color:#444}
     .nav-pill.inactive:hover{color:#888}
     .tool-card{background:#18181f;border:1.5px solid rgba(255,255,255,.06);border-radius:16px;padding:20px;text-align:left;cursor:pointer;font-family:inherit;transition:all .25s;width:100%}
     .tool-card:hover{transform:translateY(-3px);border-color:rgba(109,40,217,.35);box-shadow:0 8px 24px rgba(0,0,0,.3)}
-    .seg{flex:1;padding:13px 8px;border-radius:11px;cursor:pointer;border:1.5px solid rgba(255,255,255,.07);background:#18181f;transition:all .18s;text-align:center;font-family:inherit}
+    .seg{flex:1;padding:13px 8px;border-radius:11px;cursor:pointer;border:1.5px solid rgba(255,255,255,.09);background:#1c1c26;transition:all .18s;text-align:center;font-family:inherit}
     .seg.on{border-color:rgba(234,179,8,.55);background:rgba(234,179,8,.1)}
     .star{color:#f59e0b;font-size:13px}
     .avatar{width:40px;height:40px;border-radius:50%;border:2px solid rgba(255,255,255,.1);object-fit:cover;flex-shrink:0}
@@ -355,7 +355,7 @@ const FightTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
     <div>
       {phase==="topics"&&(<div className="fade-up">
         <div style={{marginBottom:20}}>
-          <div style={{fontSize:11,color:"#ef4444",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>Legal Defense</div>
+          <div style={{fontSize:11,color:"#ef4444",fontWeight:700,letterSpacing:1.2,marginBottom:7,textTransform:"uppercase"}}>Legal Defense</div>
           <div style={{fontSize:22,fontWeight:800,lineHeight:1.2}}>What are you dealing with?</div>
         </div>
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
@@ -374,7 +374,7 @@ const FightTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
       {phase==="input"&&(<div className="fade-up">
         <button onClick={()=>setPhase("topics")} style={{background:"none",border:"none",color:"#555",fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:18,display:"flex",alignItems:"center",gap:4}}>← Back</button>
         <div style={{marginBottom:6}}>
-          <div style={{fontSize:11,color:"#ef4444",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>{topic?.icon} {topic?.label}</div>
+          <div style={{fontSize:11,color:"#ef4444",fontWeight:700,letterSpacing:1.2,marginBottom:7,textTransform:"uppercase"}}>{topic?.icon} {topic?.label}</div>
           <div style={{fontSize:20,fontWeight:800}}>Walk us through it.</div>
         </div>
         <div style={{fontSize:12.5,color:"#555",lineHeight:1.6,marginBottom:18}}>The more you tell us, the sharper your plan. Take your time — only the first box is required.</div>
@@ -456,7 +456,7 @@ const TalentTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
     <div>
       {phase==="lane"&&(<div className="fade-up">
         <div style={{marginBottom:8}}>
-          <div style={{fontSize:11,color:"#eab308",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>Creator & Talent Contracts</div>
+          <div style={{fontSize:11,color:"#eab308",fontWeight:700,letterSpacing:1.2,marginBottom:7,textTransform:"uppercase"}}>Creator & Talent Contracts</div>
           <div style={{fontSize:22,fontWeight:800,lineHeight:1.2}}>Don't sign away your career.</div>
           <div style={{fontSize:13,color:"#555",marginTop:6,lineHeight:1.6}}>Paste any deal and AI flags the traps, checks if the money's fair, and writes your counter. First, which best describes you?</div>
         </div>
@@ -476,7 +476,7 @@ const TalentTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
       {phase==="input"&&(<div className="fade-up">
         <button onClick={()=>setPhase("lane")} style={{background:"none",border:"none",color:"#555",fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:18,display:"flex",alignItems:"center",gap:4}}>← Back</button>
         <div style={{marginBottom:6}}>
-          <div style={{fontSize:11,color:"#eab308",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>{lane?.icon} {lane?.label} Contract Check</div>
+          <div style={{fontSize:11,color:"#eab308",fontWeight:700,letterSpacing:1.2,marginBottom:7,textTransform:"uppercase"}}>{lane?.icon} {lane?.label} Contract Check</div>
           <div style={{fontSize:20,fontWeight:800}}>Let's break this deal down.</div>
         </div>
         <div style={{fontSize:12.5,color:"#555",lineHeight:1.6,marginBottom:18}}>Give us what you've got — even a screenshot's worth of text helps. Only the contract or offer is required.</div>
@@ -553,7 +553,7 @@ const ContractTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
     <div>
       {phase==="types"&&(<div className="fade-up">
         <div style={{marginBottom:20}}>
-          <div style={{fontSize:11,color:"#06b6d4",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>Contract Builder</div>
+          <div style={{fontSize:11,color:"#06b6d4",fontWeight:700,letterSpacing:1.2,marginBottom:7,textTransform:"uppercase"}}>Contract Builder</div>
           <div style={{fontSize:22,fontWeight:800,lineHeight:1.2}}>What kind of agreement?</div>
           <div style={{fontSize:13,color:"#555",marginTop:6}}>AI drafts a real, signable agreement in seconds.</div>
         </div>
@@ -572,7 +572,7 @@ const ContractTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
       {phase==="input"&&(<div className="fade-up">
         <button onClick={()=>setPhase("types")} style={{background:"none",border:"none",color:"#555",fontSize:13,cursor:"pointer",fontFamily:"inherit",marginBottom:18}}>← Back</button>
         <div style={{marginBottom:6}}>
-          <div style={{fontSize:11,color:"#06b6d4",fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>{type?.icon} {type?.label}</div>
+          <div style={{fontSize:11,color:"#06b6d4",fontWeight:700,letterSpacing:1.2,marginBottom:7,textTransform:"uppercase"}}>{type?.icon} {type?.label}</div>
           <div style={{fontSize:20,fontWeight:800}}>Fill in the details.</div>
         </div>
         <div style={{fontSize:12.5,color:"#555",lineHeight:1.6,marginBottom:18}}>The more specific you are, the stronger your agreement. Only the terms box is required.</div>
@@ -653,7 +653,7 @@ const GenericTool=({toolId,checkAccess,onAnalysisDone,isPro,onUpgrade,captured})
   return(
     <div className="fade-up">
       <div style={{marginBottom:6}}>
-        <div style={{fontSize:11,color:tool?.color,fontWeight:700,letterSpacing:1.2,marginBottom:4,textTransform:"uppercase"}}>{tool?.icon} {tool?.label}</div>
+        <div style={{fontSize:11,color:tool?.color,fontWeight:700,letterSpacing:1.2,marginBottom:7,textTransform:"uppercase"}}>{tool?.icon} {tool?.label}</div>
         <div style={{fontSize:22,fontWeight:800}}>Tell us what's going on.</div>
       </div>
       <div style={{fontSize:12.5,color:"#555",lineHeight:1.6,marginBottom:18}}>The more detail you share, the better we can help. Only the first box is required.</div>
