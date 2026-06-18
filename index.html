@@ -64,7 +64,7 @@
 <script type="text/babel">
 const {useState,useEffect}=React;
 const STRIPE_LINK="https://buy.stripe.com/fZu5kC9ot2uO27R3cvc3m00";
-const SESSION_LINK="https://buy.stripe.com/fZu5kC9ot2uO27R3cvc3m00";
+const SESSION_LINK="https://buy.stripe.com/3cIeVc7gl2uObIr3cvc3m01";
 
 const US_STATES=["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"];
 
@@ -223,7 +223,6 @@ const EmailCaptureInline=({onComplete})=>{
 const ResultPanel=({result,title,icon,onNew,isPro,captured,onEmailCaptured})=>{
   const [copied,setCopied]=useState(false);
   const [localUnlocked,setLocalUnlocked]=useState(false);
-  // Split off a NEXT STEPS block (if the AI included one) to render as a timeline
   const stepsMatch=result.match(/NEXT STEPS:?\s*([\s\S]*)$/i);
   let steps=[];
   let body=result;
@@ -280,23 +279,17 @@ pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:13.5px;line-height:
         <div style={{fontSize:13,fontWeight:700,color:"#a78bfa"}}>{icon} {title} — Analysis complete</div>
       </div>
       <div style={{background:"#18181f",border:"1px solid rgba(255,255,255,.07)",borderRadius:20,padding:26,marginBottom:14,position:"relative"}}>
-        {/* Full result if unlocked */}
         {isUnlocked?(
           <pre style={{whiteSpace:"pre-wrap",fontFamily:"inherit",fontSize:14,color:"#d0d0d0",lineHeight:1.95}}>{body}</pre>
         ):(
           <div>
-            {/* Top half — fully visible */}
             <pre style={{whiteSpace:"pre-wrap",fontFamily:"inherit",fontSize:14,color:"#d0d0d0",lineHeight:1.95,marginBottom:0}}>{visibleText}</pre>
-
-            {/* Email gate sits right in the middle of the result */}
             <div style={{margin:"20px 0",background:"rgba(109,40,217,.08)",border:"1px solid rgba(109,40,217,.3)",borderRadius:18,padding:22,textAlign:"center"}}>
               <div style={{fontSize:18,marginBottom:6}}>🔒</div>
               <div style={{fontFamily:"Fraunces,Georgia,serif",fontSize:16,fontWeight:900,color:"#fff",marginBottom:4}}>Unlock the rest — it's free</div>
               <div style={{fontSize:12,color:"#666",lineHeight:1.6,marginBottom:16}}>Enter your name and email to see your complete guidance including exact scripts, actions, and outcome.</div>
               <EmailCaptureInline onComplete={()=>{setLocalUnlocked(true);onEmailCaptured();}}/>
             </div>
-
-            {/* Bottom half — blurred */}
             <pre style={{whiteSpace:"pre-wrap",fontFamily:"inherit",fontSize:14,color:"#d0d0d0",lineHeight:1.95,filter:"blur(5px)",WebkitFilter:"blur(5px)",userSelect:"none",pointerEvents:"none"}}>{hiddenText}</pre>
           </div>
         )}
@@ -373,7 +366,6 @@ const Paywall=({onClose})=>(
   </div>
 );
 
-// ── FIGHT TOOL ────────────────────────────────────────────────────────────
 const FightTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
   const TOPICS=[
     {id:"ticket",icon:"🚨",label:"Traffic Ticket",urgency:"med",sub:"Fight your ticket, know your rights"},
@@ -475,7 +467,6 @@ const FightTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
   );
 };
 
-// ── TALENT CONTRACT TOOL ──────────────────────────────────────────────────
 const TalentTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
   const LANES=[
     {id:"creator",icon:"📱",label:"Creator",sub:"Brand deals, sponsorships, UGC, agency"},
@@ -573,7 +564,6 @@ const TalentTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
   );
 };
 
-// ── CONTRACT TOOL ─────────────────────────────────────────────────────────
 const ContractTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
   const TYPES=[
     {id:"personal_loan",icon:"💵",label:"Personal Loan Agreement",sub:"Lending money to a friend or family member"},
@@ -671,7 +661,6 @@ const ContractTool=({checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
   );
 };
 
-// ── GENERIC TOOL ──────────────────────────────────────────────────────────
 const GenericTool=({toolId,checkAccess,onAnalysisDone,isPro,onUpgrade,captured})=>{
   const tool=TOOLS.find(t=>t.id===toolId);
   const [situation,setSituation]=useState("");
@@ -747,7 +736,6 @@ const GenericTool=({toolId,checkAccess,onAnalysisDone,isPro,onUpgrade,captured})
   );
 };
 
-// ── DISCLAIMER ────────────────────────────────────────────────────────────
 const DisclaimerGate=({onAccept})=>{
   const [checked,setChecked]=useState(false);
   return(
@@ -780,7 +768,6 @@ const DisclaimerGate=({onAccept})=>{
   );
 };
 
-// ── HOME ──────────────────────────────────────────────────────────────────
 const TOOL_HOOKS={
   fight:"They called you. Here's how to shut them down.",
   talent:"That brand deal could own your work forever. Read it first.",
@@ -799,8 +786,6 @@ const TOOL_HOOKS={
 
 const Home=({onSelect})=>(
   <div className="fade-up">
-
-    {/* Hero */}
     <div style={{textAlign:"center",marginBottom:44,paddingTop:8}}>
       <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:100,padding:"6px 18px",fontSize:11,color:"#f87171",fontWeight:700,letterSpacing:1,marginBottom:20}}>
         ⚡ 13 FREE WEAPONS. ZERO LAWYERS NEEDED.
@@ -823,7 +808,6 @@ const Home=({onSelect})=>(
       </div>
     </div>
 
-    {/* Testimonials — reframed as wins */}
     <div style={{marginBottom:36}}>
       <div style={{fontSize:11,color:"#f87171",fontWeight:700,letterSpacing:1.5,marginBottom:14,textTransform:"uppercase",textAlign:"center"}}>🏆 Real people. Real wins.</div>
       <div style={{display:"flex",flexDirection:"column",gap:10}}>
@@ -845,7 +829,6 @@ const Home=({onSelect})=>(
       </div>
     </div>
 
-    {/* Tools — with hooks */}
     <div style={{marginBottom:10}}>
       <div style={{fontSize:11,color:"#ef4444",fontWeight:700,letterSpacing:1.5,marginBottom:12,textTransform:"uppercase"}}>⚔️ Pick Your Fight</div>
       <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
@@ -875,7 +858,6 @@ const Home=({onSelect})=>(
       </div>
     </div>
 
-    {/* Stats */}
     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:20}}>
       {[{n:"13",l:"Legal weapons"},{n:"50",l:"States covered"},{n:"Free",l:"To start"}].map(s=>(
         <div key={s.n} style={{background:"#18181f",border:"1px solid rgba(255,255,255,.06)",borderRadius:14,padding:"14px 10px",textAlign:"center"}}>
@@ -885,7 +867,6 @@ const Home=({onSelect})=>(
       ))}
     </div>
 
-    {/* Share prompt */}
     <div style={{background:"rgba(109,40,217,.06)",border:"1px solid rgba(109,40,217,.2)",borderRadius:16,padding:"18px 20px",marginBottom:20,textAlign:"center"}}>
       <div style={{fontSize:14,fontWeight:800,color:"#fff",marginBottom:6}}>Know someone getting screwed over?</div>
       <div style={{fontSize:12,color:"#555",marginBottom:14}}>Send them Justify. It's free. It fights back.</div>
@@ -901,7 +882,6 @@ const Home=({onSelect})=>(
   </div>
 );
 
-// ── MAIN APP ──────────────────────────────────────────────────────────────
 const App=()=>{
   const [screen,setScreen]=useState("home");
   const [tool,setTool]=useState(null);
@@ -944,7 +924,6 @@ const App=()=>{
     <div style={{minHeight:"100vh",background:"#0f0f13",position:"relative"}}>
       {!disclaimerAccepted&&<DisclaimerGate onAccept={acceptDisclaimer}/>}
 
-      {/* Top nav */}
       <nav style={{position:"sticky",top:0,zIndex:300,background:"rgba(15,15,19,.96)",backdropFilter:"blur(24px)",borderBottom:"1px solid rgba(255,255,255,.05)",padding:"12px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
         <button onClick={()=>setScreen("home")} style={{display:"flex",alignItems:"center",gap:10,background:"none",border:"none",cursor:"pointer",padding:0,fontFamily:"inherit"}}>
           <div style={{width:34,height:34,borderRadius:10,background:"linear-gradient(135deg,#6d28d9,#1d4ed8)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,fontWeight:900,color:"#fff",boxShadow:"0 0 16px rgba(109,40,217,.4)"}}>J</div>
@@ -962,7 +941,6 @@ const App=()=>{
         </button>
       </nav>
 
-      {/* Banner */}
       {!isPro&&freeUsed<3&&(
         <div style={{background:"rgba(109,40,217,.07)",borderBottom:"1px solid rgba(109,40,217,.12)",padding:"8px 24px",textAlign:"center",fontSize:12,color:"#a78bfa",fontWeight:600}}>
           ⚡ <strong>{3-freeUsed} free {3-freeUsed===1?"analysis":"analyses"}</strong> remaining — no account needed
