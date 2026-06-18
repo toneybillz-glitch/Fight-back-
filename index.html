@@ -538,46 +538,62 @@ const DisclaimerGate=({onAccept})=>{
 };
 
 // ── HOME ──────────────────────────────────────────────────────────────────
+const TOOL_HOOKS={
+  fight:"They called you. Here's how to shut them down.",
+  support:"They think you don't know your rights. Prove them wrong.",
+  expunge:"That old charge is blocking your future. Clear it.",
+  wage:"Your boss owes you money. Let's get every dollar back.",
+  loan:"They buried the trap in fine print. We'll find it.",
+  docs:"They sent you a letter hoping you'd panic. Don't.",
+  contract:"No lawyer. No confusion. Just a real agreement.",
+  mortgage:"Before you sign anything — know exactly what you're signing.",
+  smallclaims:"You don't need a lawyer to win. You need a plan.",
+  insurance:"They denied you hoping you'd give up. Don't give up.",
+  consumer:"They took your money. Here's how to take it back.",
+  idtheft:"Every hour matters. Here's exactly what to do right now.",
+};
+
 const Home=({onSelect})=>(
   <div className="fade-up">
+
     {/* Hero */}
-    <div style={{textAlign:"center",marginBottom:48,paddingTop:8}}>
-      <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(109,40,217,.1)",border:"1px solid rgba(109,40,217,.2)",borderRadius:100,padding:"6px 18px",fontSize:11,color:"#a78bfa",fontWeight:700,letterSpacing:1,marginBottom:20}}>
-        ⚡ 12 FREE LEGAL TOOLS
+    <div style={{textAlign:"center",marginBottom:44,paddingTop:8}}>
+      <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)",borderRadius:100,padding:"6px 18px",fontSize:11,color:"#f87171",fontWeight:700,letterSpacing:1,marginBottom:20}}>
+        ⚡ 12 FREE WEAPONS. ZERO LAWYERS NEEDED.
       </div>
-      <h1 style={{fontFamily:"'Fraunces',Georgia,serif",fontSize:44,fontWeight:900,letterSpacing:-1.5,lineHeight:1.05,marginBottom:14,color:"#fff"}}>
-        Know your rights.<br/>
-        <span style={{background:"linear-gradient(135deg,#a78bfa 0%,#60a5fa 50%,#34d399 100%)",backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"gradMove 3s linear infinite"}}>Fight back.</span>
+      <h1 style={{fontFamily:"'Fraunces',Georgia,serif",fontSize:40,fontWeight:900,letterSpacing:-1.5,lineHeight:1.1,marginBottom:16,color:"#fff"}}>
+        The system is designed<br/>to make you give up.<br/>
+        <span style={{background:"linear-gradient(135deg,#f87171 0%,#a78bfa 50%,#60a5fa 100%)",backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"gradMove 3s linear infinite"}}>Justify is designed<br/>to make you fight.</span>
       </h1>
-      <p style={{fontSize:15,color:"#555",lineHeight:1.8,maxWidth:400,margin:"0 auto 20px"}}>
-        AI-powered legal defense for everyday people. Debt collectors, evictions, wage theft, contracts — real answers, no lawyer fees.
+      <p style={{fontSize:14,color:"#555",lineHeight:1.8,maxWidth:380,margin:"0 auto 20px"}}>
+        Real AI. Real answers. Real power. Debt collectors, landlords, employers, courts — they're counting on you not knowing your rights.
       </p>
-      <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:16,flexWrap:"wrap"}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:14,flexWrap:"wrap",marginBottom:4}}>
         <div style={{display:"flex",alignItems:"center",gap:6,fontSize:12,color:"#555"}}>
-          <span style={{color:"#f59e0b"}}>★★★★★</span> 4.9 rating
+          <span style={{color:"#f59e0b"}}>★★★★★</span> 4.9/5
         </div>
-        <div style={{width:1,height:14,background:"rgba(255,255,255,.08)"}}/>
-        <div style={{fontSize:12,color:"#555"}}>🔒 Never stores your data</div>
-        <div style={{width:1,height:14,background:"rgba(255,255,255,.08)"}}/>
-        <div style={{fontSize:12,color:"#555"}}>⚡ Free to try</div>
+        <div style={{width:1,height:12,background:"rgba(255,255,255,.08)"}}/>
+        <div style={{fontSize:12,color:"#555"}}>🔒 Private & secure</div>
+        <div style={{width:1,height:12,background:"rgba(255,255,255,.08)"}}/>
+        <div style={{fontSize:12,color:"#555"}}>50 states covered</div>
       </div>
     </div>
 
-    {/* Testimonials */}
+    {/* Testimonials — reframed as wins */}
     <div style={{marginBottom:36}}>
-      <div style={{fontSize:11,color:"#555",fontWeight:700,letterSpacing:1.5,marginBottom:14,textTransform:"uppercase",textAlign:"center"}}>Real people, real results</div>
-      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      <div style={{fontSize:11,color:"#f87171",fontWeight:700,letterSpacing:1.5,marginBottom:14,textTransform:"uppercase",textAlign:"center"}}>🏆 Real people. Real wins.</div>
+      <div style={{display:"flex",flexDirection:"column",gap:10}}>
         {TESTIMONIALS.map((t,i)=>(
-          <div key={i} style={{background:"#18181f",border:"1px solid rgba(255,255,255,.06)",borderRadius:16,padding:"16px 18px",display:"flex",gap:14,alignItems:"flex-start"}}>
-            <div style={{width:46,height:46,borderRadius:"50%",background:t.bg,border:`2px solid ${t.color}44`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:15,fontWeight:800,color:t.color,letterSpacing:.5}}>{t.initials}</div>
+          <div key={i} style={{background:"#18181f",border:"1px solid rgba(255,255,255,.06)",borderRadius:16,padding:"14px 16px",display:"flex",gap:14,alignItems:"flex-start"}}>
+            <div style={{width:42,height:42,borderRadius:"50%",background:t.bg,border:`2px solid ${t.color}44`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,fontSize:14,fontWeight:800,color:t.color}}>{t.initials}</div>
             <div style={{flex:1}}>
-              <div style={{color:"#f59e0b",fontSize:12,marginBottom:4}}>★★★★★</div>
-              <div style={{fontSize:13,color:"#bbb",lineHeight:1.6,marginBottom:8}}>"{t.text}"</div>
-              <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
-                <div style={{fontSize:12,fontWeight:700,color:"#888"}}>{t.name}</div>
+              <div style={{color:"#f59e0b",fontSize:11,marginBottom:4}}>★★★★★</div>
+              <div style={{fontSize:13,color:"#bbb",lineHeight:1.6,marginBottom:6}}>"{t.text}"</div>
+              <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+                <div style={{fontSize:11,fontWeight:700,color:"#777"}}>{t.name}</div>
                 <div style={{fontSize:10,color:"#333"}}>·</div>
-                <div style={{fontSize:11,color:"#444"}}>{t.location}</div>
-                <span style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:100,background:`${t.color}18`,border:`1px solid ${t.color}33`,color:t.color}}>{t.tool}</span>
+                <div style={{fontSize:10,color:"#444"}}>{t.location}</div>
+                <span style={{fontSize:9,fontWeight:700,padding:"2px 7px",borderRadius:100,background:`${t.color}18`,border:`1px solid ${t.color}33`,color:t.color,marginLeft:2}}>{t.tool}</span>
               </div>
             </div>
           </div>
@@ -585,56 +601,56 @@ const Home=({onSelect})=>(
       </div>
     </div>
 
-    {/* Tools */}
+    {/* Tools — with hooks */}
     <div style={{marginBottom:10}}>
-      <div style={{fontSize:11,color:"#666",fontWeight:700,letterSpacing:1.5,marginBottom:12,textTransform:"uppercase"}}>⚔️ Defense Tools</div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:20}}>
+      <div style={{fontSize:11,color:"#ef4444",fontWeight:700,letterSpacing:1.5,marginBottom:12,textTransform:"uppercase"}}>⚔️ Pick Your Fight</div>
+      <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
         {TOOLS.slice(0,6).map(t=>(
-          <button key={t.id} onClick={()=>onSelect(t.id)} className="tool-card">
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
-              <div style={{fontSize:24}}>{t.icon}</div>
-              <span style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:100,background:`${t.color}18`,border:`1px solid ${t.color}33`,color:t.color}}>{t.tag}</span>
+          <button key={t.id} onClick={()=>onSelect(t.id)}
+            style={{background:"#18181f",border:"1px solid rgba(255,255,255,.06)",borderRadius:16,padding:"16px 18px",textAlign:"left",cursor:"pointer",fontFamily:"inherit",transition:"all .2s",display:"flex",alignItems:"center",gap:16,width:"100%"}}>
+            <div style={{fontSize:28,flexShrink:0}}>{t.icon}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:14,fontWeight:800,color:"#f0f0f0",marginBottom:3}}>{t.label}</div>
+              <div style={{fontSize:12,color:"#555",lineHeight:1.5}}>{TOOL_HOOKS[t.id]}</div>
             </div>
-            <div style={{fontSize:13,fontWeight:800,color:"#f0f0f0",marginBottom:3}}>{t.label}</div>
-            <div style={{fontSize:10,color:"#444",lineHeight:1.5,marginBottom:10}}>{t.sub}</div>
-            <div style={{fontSize:11,fontWeight:700,color:t.color}}>Start free →</div>
+            <div style={{fontSize:18,color:"#333",flexShrink:0}}>→</div>
           </button>
         ))}
       </div>
-      <div style={{fontSize:11,color:"#666",fontWeight:700,letterSpacing:1.5,marginBottom:12,textTransform:"uppercase"}}>✨ New Tools</div>
+
+      <div style={{fontSize:11,color:"#a78bfa",fontWeight:700,letterSpacing:1.5,marginBottom:12,textTransform:"uppercase"}}>✨ More Weapons</div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:28}}>
         {TOOLS.slice(6).map(t=>(
           <button key={t.id} onClick={()=>onSelect(t.id)} className="tool-card">
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
-              <div style={{fontSize:24}}>{t.icon}</div>
-              <span style={{fontSize:9,fontWeight:700,padding:"2px 8px",borderRadius:100,background:`${t.color}18`,border:`1px solid ${t.color}33`,color:t.color}}>{t.tag}</span>
-            </div>
-            <div style={{fontSize:13,fontWeight:800,color:"#f0f0f0",marginBottom:3}}>{t.label}</div>
-            <div style={{fontSize:10,color:"#444",lineHeight:1.5,marginBottom:10}}>{t.sub}</div>
-            <div style={{fontSize:11,fontWeight:700,color:t.color}}>Start free →</div>
+            <div style={{fontSize:22,marginBottom:8}}>{t.icon}</div>
+            <div style={{fontSize:12,fontWeight:800,color:"#f0f0f0",marginBottom:4}}>{t.label}</div>
+            <div style={{fontSize:10,color:"#444",lineHeight:1.5,marginBottom:10}}>{TOOL_HOOKS[t.id]}</div>
+            <div style={{fontSize:11,fontWeight:700,color:t.color}}>Fight back →</div>
           </button>
         ))}
       </div>
     </div>
 
-    {/* Trust bar */}
-    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:24}}>
-      {[{n:"12",l:"Legal tools"},{n:"50",l:"States covered"},{n:"4.9★",l:"User rating"}].map(s=>(
+    {/* Stats */}
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:20}}>
+      {[{n:"12",l:"Legal weapons"},{n:"50",l:"States covered"},{n:"Free",l:"To start"}].map(s=>(
         <div key={s.n} style={{background:"#18181f",border:"1px solid rgba(255,255,255,.06)",borderRadius:14,padding:"14px 10px",textAlign:"center"}}>
-          <div style={{fontSize:20,fontWeight:900,background:"linear-gradient(135deg,#a78bfa,#60a5fa)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",marginBottom:4}}>{s.n}</div>
+          <div style={{fontSize:20,fontWeight:900,background:"linear-gradient(135deg,#f87171,#a78bfa)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",marginBottom:4}}>{s.n}</div>
           <div style={{fontSize:10,color:"#444"}}>{s.l}</div>
         </div>
       ))}
     </div>
 
-    {/* As seen in / trust logos (text-based) */}
-    <div style={{background:"#18181f",border:"1px solid rgba(255,255,255,.05)",borderRadius:14,padding:"16px 20px",marginBottom:20,textAlign:"center"}}>
-      <div style={{fontSize:10,color:"#333",fontWeight:700,letterSpacing:1.5,marginBottom:12,textTransform:"uppercase"}}>Trusted by people fighting back in all 50 states</div>
-      <div style={{display:"flex",justifyContent:"center",gap:20,flexWrap:"wrap"}}>
-        {["Debt Collectors","Evictions","Wage Theft","Bad Loans","Court Summons","Employers"].map(t=>(
-          <div key={t} style={{fontSize:11,color:"#444",padding:"4px 10px",borderRadius:100,background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.05)"}}>{t}</div>
-        ))}
-      </div>
+    {/* Share prompt */}
+    <div style={{background:"rgba(109,40,217,.06)",border:"1px solid rgba(109,40,217,.2)",borderRadius:16,padding:"18px 20px",marginBottom:20,textAlign:"center"}}>
+      <div style={{fontSize:14,fontWeight:800,color:"#fff",marginBottom:6}}>Know someone getting screwed over?</div>
+      <div style={{fontSize:12,color:"#555",marginBottom:14}}>Send them Justify. It's free. It fights back.</div>
+      <button onClick={()=>{
+        if(navigator.share){navigator.share({title:"Justify — AI Legal Defense",text:"Free AI tool that tells you exactly what to say to debt collectors, landlords, and employers. No lawyer needed.",url:window.location.href});}
+        else{navigator.clipboard?.writeText(window.location.href);alert("Link copied!");}
+      }} style={{background:"linear-gradient(135deg,#6d28d9,#1d4ed8)",border:"none",borderRadius:12,color:"#fff",fontSize:13,fontWeight:700,padding:"12px 24px",cursor:"pointer",fontFamily:"inherit"}}>
+        📤 Share Justify
+      </button>
     </div>
 
     <div style={{fontSize:11,color:"#222",lineHeight:1.7,textAlign:"center",padding:"0 10px"}}>⚠ Justify provides general legal information, not legal advice. Consult a licensed attorney in your state for complex matters.</div>
